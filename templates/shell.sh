@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# ---
+# title: example  # 필수 · str · 파일을 부르는 이름(보통 파일 이름)
+# description: 이 파일이 하는 일 한 줄  # 필수 · str · 한 줄 요약(init은 비워 두고 경고)
+# authors: [coralstay]  # 필수 · list · git 작성자(init이 git log에서 채움)
+# license: AGPL-3.0-only  # 필수 · SPDX 식 · 저장소 LICENSE와 다르면 경고
+# status: draft  # 필수 · draft|review|published|deprecated|archived
+# task: TASK-1  # 선택 · str · 이 파일을 만든·바꾼 Backlog.md 카드 ID
+# created_date: '2026-10-31'  # 필수 · date · 처음 추가된 커밋 날짜(init이 채움)
+# updated_date: '2026-10-31'  # 필수 · date · 본문이 바뀐 커밋 날짜(fix --staged가 갱신)
+# # 아래 선택 필드는 필요할 때 앞의 '# '를 지우고 쓴다
+# # reviewers: [name]  # review 이상에서 필수 · list · 검토한 사람
+# # reviewed_date: '2026-11-01'  # published에서 필수 · date · 검토한 날
+# # published_date: '2026-11-02'  # published에서 필수 · date · 공개한 날
+# # deprecated_date: '2026-12-01'  # deprecated·archived에서 필수 · date
+# # superseded_by: path/to/new.py  # deprecated·archived에서 필수 · 대신 쓸 파일
+# # labels: [tool]  # 선택 · list · 분류 태그
+# # version: 1.0.0  # 선택 · str · 파일 단위 버전
+# # upstream: https://example.com/repo  # 선택 · 외부 출처, 있으면 THIRD_PARTY_NOTICES.md에 기록
+# ---
+# [설계 메모] 무엇을 왜 이렇게 했는지 자유롭게 적는다.
+set -euo pipefail

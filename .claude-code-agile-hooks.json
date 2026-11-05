@@ -1,0 +1,6 @@
+{
+  "testCommand": "uvx --with pytest pytest -q -p no:cacheprovider",
+  "coverageCommand": "uvx --with pytest-cov pytest -q --cov --cov-report=term-missing --cov-report=xml -p no:cacheprovider",
+  "testFirst": { "sourceGlobs": ["source-header.py"], "testGlobs": ["test_*.py"] },
+  "humanSigners": ["human"]
+}

@@ -1,0 +1,17 @@
+# Python & Linter caches
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
+.pytest_cache/
+
+# macOS
+.DS_Store
+._*
+
+# Coverage gate output
+.coverage
+coverage.xml
+
+# claude-code-agile-hooks 커버리지 게이트 로그(세션 ID 포함, 커밋 금지)
+/.claude-code-agile-hooks/
