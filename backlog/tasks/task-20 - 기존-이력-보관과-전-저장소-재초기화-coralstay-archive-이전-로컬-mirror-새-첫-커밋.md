@@ -4,7 +4,7 @@ title: '기존 이력 보관과 전 저장소 재초기화: coralstay-archive �
 status: In Progress
 assignee: []
 created_date: '2026-11-01T12:50:00Z'
-updated_date: '2026-11-05T15:52:00Z'
+updated_date: '2026-11-05T18:36:00Z'
 labels:
   - archive
   - reinit
@@ -33,8 +33,8 @@ documentation:
 - [x] #1 18개 저장소의 로컬 mirror가 ~/githubs-archive/2026-11-01/에 있고 git fsck가 통과한다
 - [x] #2 18개 저장소가 coralstay-archive 조직에 Private·Archived로 보관되고 PR·이슈 수가 이전 전과 같다(B1)
 - [x] #3 저장소마다 새 첫 커밋 전 추적 대상 민감 패턴·제3자 경로가 0이다(B2)
-- [ ] #4 18개 저장소가 coralstay 계정에 Private으로 새로 만들어지고(B3) 커밋 1개, 작성자 coralstay <231006716+coralstay@users.noreply.github.com>, 사람 서명 Verified다
-- [ ] #5 로컬 무시 파일(책 원본·데이터 등)이 그대로 남아 있다
+- [x] #4 18개 저장소가 coralstay 계정에 Private으로 새로 만들어지고(B3) 커밋 1개, 작성자 coralstay <231006716+coralstay@users.noreply.github.com>, 사람 서명 Verified다
+- [x] #5 로컬 무시 파일(책 원본·데이터 등)이 그대로 남아 있다
 <!-- AC:END -->
 
 ## Definition of Done
@@ -92,4 +92,12 @@ documentation:
 - 발견: Antigravity가 서명 없이 커밋함(전역 commit.gpgsign=true를 우회) → agy() 밖(데스크톱 앱 등)의 서명 강제가 필요. 서명 없는 커밋은 공개 저장소 main-protect(서명 필수)에서 막히고, 로컬에서는 .githooks 검사 플러그인이 필요
 - 나머지 11곳의 미커밋 변경은 모두 TASK-18 정리분(11-01~02) → 첫 커밋에 포함
 - 4단계 스크립트: ~/githubs-backup/2026-11-01/reinit.sh (보관 확인 → .git 삭제 → init → 파일 수·패턴 재확인 → 사람 서명 첫 커밋(G/human 확인) → coralstay/<이름> Private 생성·push·메타데이터 복원), Claude/agy 환경에서는 실행 거부
+
+## 4·5단계 재초기화와 확인 (2026-11-06, 유저 실행 reinit.sh)
+- 증거: TASK-20#4 — 17개 저장소(ebpf 제외) coralstay/<이름> Private 새로 생성, GitHub 커밋 1개·verified=true/valid·작성자 noreply(gh api로 17곳 확인). 로컬: 커밋 1개, 옛 신원(커밋 작성자·커미터) 0, 서명 G/human, main=origin/main, 미커밋 0
+- 증거: TASK-20#5 — 로컬 .gitignore 대상(책 원본·Drive map·OCR 등)은 디스크에 그대로 남음, 첫 커밋 파일 수 = 3단계 미리보기
+- 진행 중 고친 스크립트 문제: (1) 옮긴 저장소의 옛 주소가 보관본으로 자동 연결돼 '이미 있음'으로 오판 → 실제 소유자 비교 (2) $cnt 뒤 한글이 변수 이름으로 읽혀 unbound variable → ${cnt} (3) push 실패를 '끝남'으로 오판 → 원격 main 비교, 생성과 push 분리(이어서 하기) (4) .git/info/exclude(.opensource/, .todo/ 등 로컬 전용 제외)가 사라져 파일 수 불일치 → 새 .git으로 옮기도록 수정, 완료 저장소에도 복원
+- 제외: ebpf-wire-to-code-tracer(Antigravity 작업 중). 새로 발견: freeride/handcrafted-python(Antigravity가 11-06 02:46 coralstay/handcrafted-python Private 생성, 서명 없는 커밋 2개) — 같은 검토(저작권·라이선스·서명) 필요
+- 옛 이력: coralstay-archive(18 Archived) + ~/githubs-archive/2026-11-01(mirror 18)
+- 이전 카드 이력의 커밋 해시는 새 이력에 없음(보관본에서 확인)
 <!-- SECTION:NOTES:END -->

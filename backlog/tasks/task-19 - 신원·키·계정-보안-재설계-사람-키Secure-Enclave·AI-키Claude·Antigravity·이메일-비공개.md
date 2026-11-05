@@ -4,7 +4,7 @@ title: '신원·키·계정 보안 재설계: 사람 키(Secure Enclave)·AI 키
 status: In Progress
 assignee: []
 created_date: '2026-11-01T12:50:00Z'
-updated_date: '2026-11-05T14:22:00Z'
+updated_date: '2026-11-05T18:36:00Z'
 labels:
   - identity
   - security
@@ -31,7 +31,7 @@ documentation:
 <!-- AC:BEGIN -->
 - [x] #1 [수동 검증] GitHub 계정: gmail 인증·primary(비공개), "Keep my email addresses private"·"Block command line pushes that expose my email" 켜 둠, 2FA(passkey+TOTP), 불필요한 앱·토큰·키 폐기, vigilant mode 켜짐
 - [x] #2 [수동 검증] 새 신원으로 GitHub 인증이 된다(ssh -T 성공, 사람 인증 키는 Secure Enclave)
-- [ ] #3 [수동 검증] 사람 서명 키가 Secure Enclave에 있고 서명마다 Touch ID를 요구하며(B1) GitHub 서명 키로 등록돼 커밋이 Verified로 보인다
+- [x] #3 [수동 검증] 사람 서명 키가 Secure Enclave에 있고 서명마다 Touch ID를 요구하며(B1) GitHub 서명 키로 등록돼 커밋이 Verified로 보인다
 - [ ] #4 [수동 검증] Claude Code와 Antigravity가 각자 다른 AI 서명 키로 서명하고(B2) GitHub에서 Verified, git log --show-signature에서 principal이 구별된다
 - [x] #5 [수동 검증] AI 서명으로 만든 Plan-Approved 커밋은 훅이 거부한다(B3)
 - [x] #6 [수동 검증] git 전역 user.email·~/.mailmap이 coralstay <231006716+coralstay@users.noreply.github.com> 기준이고(B4), 옛 github_signature 키는 GitHub·로컬에서 폐기됐다
@@ -126,6 +126,8 @@ GitHub 웹 설정·Touch ID·settings.json 수정은 유저만 할 수 있으므
 - 증거: TASK-19#10 — rocky-dev 키 암호 설정(ssh-keygen -y -P '' 실패), config.d UseKeychain, 'ssh -o BatchMode=yes rocky-dev' 성공(암호 입력 없이 → 키체인 사용). gh 토큰 축소 일정은 KEYS.md 4절(TASK-20 뒤)
 - rocky-dev: Rocky Linux 9.8 (Blue Onyx), 커널 5.14.0-687.10.1.el9_8.0.1.aarch64, openssh-server 9.9p1-7.el9_8 — KEYS.md·config.d 주석에 기록. PQ 키 교환 경고는 서버 지원은 있으나 crypto-policies로 꺼진 것으로 보임(앞서 '8.x라 미지원'으로 추정한 설명은 틀렸음)
 - 발견: toy-project scripts/_vm.sh가 config.d/rocky-dev를 재생성하며 UseKeychain을 빼고, 새 VM 키를 암호 없이 만든다 → toy-project DRAFT-24로 남김
+
+증거: TASK-19#3 (GitHub) — 2026-11-06 재초기화한 17개 저장소의 사람 서명 첫 커밋이 GitHub에서 verified=true/valid(예: coralstay/freeride 01ed502). AC #4(AI 키의 GitHub Verified)는 Claude 커밋이 처음 push될 때 확인
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
