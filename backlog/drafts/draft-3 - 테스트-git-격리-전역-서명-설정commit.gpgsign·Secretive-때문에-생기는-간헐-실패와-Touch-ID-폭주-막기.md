@@ -4,7 +4,7 @@ title: '테스트 git 격리: 전역 서명 설정(commit.gpgsign·Secretive) �
 status: Draft
 assignee: []
 created_date: '2026-11-05T15:12:00Z'
-updated_date: '2026-11-05T15:12:00Z'
+updated_date: '2026-11-05T21:54:00Z'
 labels:
   - tests
   - git
@@ -42,3 +42,9 @@ source-header는 TASK-3에서 이미 격리함(GitCase: GIT_CONFIG_GLOBAL=빈 �
 <!-- DOD:BEGIN -->
 - [ ] #1 각 저장소 테스트 전체 통과 로그
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+진행(2026-11-06): claude-code-agile-hooks 분은 그 저장소 TASK-74로 처리했다(hooks/conftest.py autouse 격리, 7f939e2). 5회 연속 2453 passed, Secretive 서명 요청 0. 원인은 테스트가 사용자 서명 환경을 물려받은 것이고, 간헐 실패 자체는 Secretive 쇼트 리드 결함(upkeep runbooks/secretive-short-read). coding-agent-git-commit-tool은 tests/isolated_repo.py child_env(GF-125)로 이미 격리돼 있다. 남은 것: AC #3(다른 저장소 확인).
+<!-- SECTION:NOTES:END -->
