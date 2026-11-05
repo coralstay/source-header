@@ -4,7 +4,7 @@ title: '기존 이력 보관과 전 저장소 재초기화: coralstay-archive �
 status: In Progress
 assignee: []
 created_date: '2026-11-01T12:50:00Z'
-updated_date: '2026-11-05T18:36:00Z'
+updated_date: '2026-11-05T20:05:00Z'
 labels:
   - archive
   - reinit
@@ -100,4 +100,6 @@ documentation:
 - 제외: ebpf-wire-to-code-tracer(Antigravity 작업 중). 새로 발견: freeride/handcrafted-python(Antigravity가 11-06 02:46 coralstay/handcrafted-python Private 생성, 서명 없는 커밋 2개) — 같은 검토(저작권·라이선스·서명) 필요
 - 옛 이력: coralstay-archive(18 Archived) + ~/githubs-archive/2026-11-01(mirror 18)
 - 이전 카드 이력의 커밋 해시는 새 이력에 없음(보관본에서 확인)
+
+이관(2026-11-06): upkeep 저장소(coralstay/upkeep, Private) TASK- 옮겼다. 이후 진행·증거·Done은 그쪽에서 한다.
 <!-- SECTION:NOTES:END -->

@@ -4,7 +4,7 @@ title: '신원·키·계정 보안 재설계: 사람 키(Secure Enclave)·AI 키
 status: In Progress
 assignee: []
 created_date: '2026-11-01T12:50:00Z'
-updated_date: '2026-11-05T18:36:00Z'
+updated_date: '2026-11-05T20:05:00Z'
 labels:
   - identity
   - security
@@ -128,6 +128,8 @@ GitHub 웹 설정·Touch ID·settings.json 수정은 유저만 할 수 있으므
 - 발견: toy-project scripts/_vm.sh가 config.d/rocky-dev를 재생성하며 UseKeychain을 빼고, 새 VM 키를 암호 없이 만든다 → toy-project DRAFT-24로 남김
 
 증거: TASK-19#3 (GitHub) — 2026-11-06 재초기화한 17개 저장소의 사람 서명 첫 커밋이 GitHub에서 verified=true/valid(예: coralstay/freeride 01ed502). AC #4(AI 키의 GitHub Verified)는 Claude 커밋이 처음 push될 때 확인
+
+이관(2026-11-06): upkeep 저장소(coralstay/upkeep, Private) TASK- 옮겼다. 이후 진행·증거·Done은 그쪽에서 한다.
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
