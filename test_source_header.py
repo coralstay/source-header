@@ -1110,10 +1110,10 @@ MARKED_BODY = (
 
 
 class TestBodyNoteMarkers(GitCase):
-    """23#3 본문 줄 끝 `# ---- N` 표식과 하단 노트 구역은 헤더 파서·lint·init·fix 결과를 바꾸지 않는다"""
+    """TASK-23#3 본문 줄 끝 `# ---- N` 표식과 하단 노트 구역은 헤더 파서·lint·init·fix 결과를 바꾸지 않는다"""
 
     def test_lint_same_with_and_without_markers(self) -> None:
-        """23#3 닫는 헤더 줄 `# ---`와 본문 `# ---- 1`이 섞여도 헤더 필드와 lint 결과가 같다"""
+        """TASK-23#3 닫는 헤더 줄 `# ---`와 본문 `# ---- 1`이 섞여도 헤더 필드와 lint 결과가 같다"""
         plain = py_file(CANONICAL_FIELDS, PLAIN_BODY)
         marked = py_file(CANONICAL_FIELDS, MARKED_BODY)
         h_plain = sh.extract_header(plain, "a.py")
@@ -1129,7 +1129,7 @@ class TestBodyNoteMarkers(GitCase):
                          codes(sh.lint_text(PLAIN_BODY, "a.py", ctx)))
 
     def test_init_keeps_body_untouched(self) -> None:
-        """23#3 init은 표식이 든 본문을 그대로 두고 표식 없는 파일과 같은 헤더를 넣는다"""
+        """TASK-23#3 init은 표식이 든 본문을 그대로 두고 표식 없는 파일과 같은 헤더를 넣는다"""
         self.write("m.py", MARKED_BODY)
         self.write("p.py", PLAIN_BODY)
         self.git("add", ".")
@@ -1148,7 +1148,7 @@ class TestBodyNoteMarkers(GitCase):
         self.assertEqual(lint_m.stdout.replace("m.py", "x"), lint_p.stdout.replace("p.py", "x"))
 
     def test_fix_staged_same_with_markers(self) -> None:
-        """23#3 fix --staged는 표식 본문에서도 updated_date만 바꾸고 본문은 건드리지 않는다"""
+        """TASK-23#3 fix --staged는 표식 본문에서도 updated_date만 바꾸고 본문은 건드리지 않는다"""
         old = dict(CANONICAL_FIELDS, updated_date="2026-10-02")
         self.write("a.py", py_file(old, MARKED_BODY))
         self.git("add", ".")
@@ -1165,13 +1165,13 @@ class TestBodyNoteMarkers(GitCase):
 
 
 class TestNoteMarkerSpec(unittest.TestCase):
-    """23#1 23#2 23#4 본문 노트 표식 규격 문서와 템플릿"""
+    """TASK-23#1 TASK-23#2 TASK-23#4 본문 노트 표식 규격 문서와 템플릿"""
 
     def readme(self) -> str:
         return (HERE / "README.md").read_text(encoding="utf-8")
 
     def test_readme_has_note_marker_section(self) -> None:
-        """23#1 23#B1 23#B2 README에 형식·하단 노트 구역·번호 규칙·예시가 있다"""
+        """TASK-23#1 TASK-23#B1 TASK-23#B2 TASK-23#D3 README에 형식·하단 노트 구역·번호 규칙·예시가 있다"""
         text = self.readme()
         self.assertIn("## 본문 노트 표식", text)
         for needle in ("---- N", "======== 노트 ========", "설명:", "관련:", "개념:",
@@ -1179,7 +1179,7 @@ class TestNoteMarkerSpec(unittest.TestCase):
             self.assertIn(needle, text)
 
     def test_readme_has_conversion_rules(self) -> None:
-        """23#4 23#B4 README에 기존 주석 변환 규칙(@file/@path/@book 배너, 설명 주석)이 있다"""
+        """TASK-23#4 TASK-23#B4 TASK-23#D3 README에 기존 주석 변환 규칙(@file/@path/@book 배너, 설명 주석)이 있다"""
         text = self.readme()
         self.assertIn("### 기존 주석 변환", text)
         for needle in ("@file", "@path", "@book", "프론트매터", "정보를 버리지"):
@@ -1188,7 +1188,7 @@ class TestNoteMarkerSpec(unittest.TestCase):
         self.assertIn("`@path` 배너 (저장소 기준 경로) | 프론트매터 `title`에 경로를 그대로 쓴다", text)
 
     def test_templates_have_marker_example(self) -> None:
-        """23#2 23#B3 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
+        """TASK-23#2 TASK-23#B3 TASK-23#D2 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
         prefixes = {"python.py": "#", "shell.sh": "#", "typescript.ts": "//", "go.go": "//",
                     "sql.sql": "--"}
         for name, prefix in prefixes.items():
