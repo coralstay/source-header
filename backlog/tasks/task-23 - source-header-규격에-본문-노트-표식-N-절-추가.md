@@ -1,10 +1,10 @@
 ---
 id: TASK-23
 title: source-header 규격에 본문 노트 표식(---- N) 절 추가
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-06T11:12:00Z'
-updated_date: '2026-11-06T11:35:00Z'
+updated_date: '2026-11-06T11:36:00Z'
 labels:
   - source-header
   - spec
