@@ -1,4 +1,4 @@
-<!-- work-order-hash: f992976171351e20de4b301ab058241f6de88eb58b36b4685e302217ae263172 -->
+<!-- work-order-hash: dbcc5e5969623e4b351674c2d3a0593a709b9435facc3bec73f023ad328c0a5a -->
 # 작업 순서
 
 `work_order.py`가 backlog/tasks의 의존(`dependencies`)으로 만든 파일이다 — 직접 고치지 말고 다시 생성한다. 같은 단계의 태스크는 병렬로, 단계는 위에서 아래로 순차로 진행한다. Done 태스크와 없는 태스크에 대한 의존은 충족된 것으로 본다.
@@ -16,11 +16,6 @@
 | 1 | TASK-19 | 신원·키·계정 보안 재설계: 사람 키(Secure Enclave)·AI 키(Claude·Antigravity)·이메일 비공개 |
 | 2 | TASK-4 | source-header 적용: dev-tools/central-docs-collector |
 | 2 | TASK-5 | source-header 적용: dev-tools/omnivim |
-| 2 | TASK-7 | source-header 적용: freeride |
-| 2 | TASK-8 | source-header 적용: freeride/handcrafted-cpp |
-| 2 | TASK-9 | source-header 적용: freeride/coding-style-refactoring-principles |
-| 2 | TASK-10 | source-header 적용: freeride/databases |
-| 2 | TASK-11 | source-header 적용: freeride/handcrafted-java |
 | 2 | TASK-14 | source-header 적용: dev-tools/ebpf-wire-to-code-tracer |
 | 2 | TASK-20 | 기존 이력 보관과 전 저장소 재초기화: coralstay-archive 이전 + 로컬 mirror + 새 첫 커밋 |
 | 2 | TASK-21 | 보안 기준선 점검으로 확장: 비밀값 스캔·push 보호·Dependabot·Actions 권한·SECURITY.md |
