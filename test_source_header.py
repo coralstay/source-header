@@ -1171,7 +1171,7 @@ class TestNoteMarkerSpec(unittest.TestCase):
         return (HERE / "README.md").read_text(encoding="utf-8")
 
     def test_readme_has_note_marker_section(self) -> None:
-        """TASK-23#1 TASK-23#B1 TASK-23#B2 TASK-23#D3 README에 형식·하단 노트 구역·번호 규칙·예시가 있다"""
+        """TASK-23#1 TASK-23#B1 TASK-23#B2 TASK-23#D2 README에 형식·하단 노트 구역·번호 규칙·예시가 있다"""
         text = self.readme()
         self.assertIn("## 본문 노트 표식", text)
         for needle in ("---- N", "======== 노트 ========", "설명:", "관련:", "개념:",
@@ -1179,7 +1179,7 @@ class TestNoteMarkerSpec(unittest.TestCase):
             self.assertIn(needle, text)
 
     def test_readme_has_conversion_rules(self) -> None:
-        """TASK-23#4 TASK-23#B4 TASK-23#D3 README에 기존 주석 변환 규칙(@file/@path/@book 배너, 설명 주석)이 있다"""
+        """TASK-23#4 TASK-23#B4 TASK-23#D2 README에 기존 주석 변환 규칙(@file/@path/@book 배너, 설명 주석)이 있다"""
         text = self.readme()
         self.assertIn("### 기존 주석 변환", text)
         for needle in ("@file", "@path", "@book", "프론트매터", "정보를 버리지"):
@@ -1188,7 +1188,7 @@ class TestNoteMarkerSpec(unittest.TestCase):
         self.assertIn("`@path` 배너 (저장소 기준 경로) | 프론트매터 `title`에 경로를 그대로 쓴다", text)
 
     def test_templates_have_marker_example(self) -> None:
-        """TASK-23#2 TASK-23#B3 TASK-23#D2 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
+        """TASK-23#2 TASK-23#B3 TASK-23#D1 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
         prefixes = {"python.py": "#", "shell.sh": "#", "typescript.ts": "//", "go.go": "//",
                     "sql.sql": "--"}
         for name, prefix in prefixes.items():

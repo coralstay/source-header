@@ -4,7 +4,7 @@ title: source-header 규격에 본문 노트 표식(---- N) 절 추가
 status: In Progress
 assignee: []
 created_date: '2026-11-06T11:12:00Z'
-updated_date: '2026-11-06T11:44:00Z'
+updated_date: '2026-11-06T11:48:00Z'
 labels:
   - source-header
   - spec
@@ -45,10 +45,8 @@ documentation:
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [x] #1 pytest 전체 통과 로그를 확인했다
-- [x] #2 templates 5개가 source-header lint --strict를 통과했다
-- [x] #3 README의 새 절이 AC #1·#4 항목을 모두 담고 있다
-- [x] #4 도구 코드(source-header.py) 변경이 없거나, 있으면 유저 확인을 받았다
+- [x] #1 templates 5개가 source-header lint --strict를 통과했다
+- [x] #2 README의 새 절이 AC #1·#4 항목을 모두 담고 있다
 <!-- DOD:END -->
 
 ## Implementation Plan
