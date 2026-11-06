@@ -87,3 +87,9 @@ LICENSE 없음 → AGPL-3.0 LICENSE 추가
 - DoD #3: 유저가 description 286개(8개 저장소) 중 무작위 20개를 샘플 검토하고 '그래도 모두 남겨'라고 결정했다. 템플릿형 설명(테스트 파일)이 있으나 그대로 둔다.
 - AC '.githooks 설치'는 유저 결정으로 후속 draft(source-header DRAFT-7, GF-149 이후)로 분리했다.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+central-docs-collector에 source-header 헤더(프론트매터·AGPL-3.0-only·한 줄 description)와 본문 노트 표식(수집기 14·테스트 4)을 적용했다. 기존 배너의 사용법 가이드·흐름도는 [설계 메모]로 그대로 보존했다. 두 .py의 AST가 main과 같고 lint --strict 0 오류, --test 정상, 표식:노트 1:1 연속. LICENSE는 이미 AGPL이라 변경 없음. .githooks 설치는 GF-149 이후 후속 draft로 분리. 커밋 6c59600 58cc66e 16aee3b(저장소 central-docs-collector, 브랜치 task/TASK-4, 미push).
+<!-- SECTION:FINAL_SUMMARY:END -->
