@@ -1092,5 +1092,76 @@ class TestCoverageEdges(TempDirCase):
         self.assertEqual(sh.extract_header(crlf, "a.py").fields["status"], "draft")
 
 
+PLAIN_BODY = "def main():\n    run()\n    return 0\n"
+MARKED_BODY = (
+    "def main():\n"
+    "    run()  # ---- 1\n"
+    "    return 0  # ---- 2\n"
+    "\n"
+    "# ======== 노트 ========\n"
+    "# 1 진입점\n"
+    "#   설명: 실행의 시작\n"
+    "#   관련: README.md\n"
+    "#   개념: 멱등\n"
+    "# 2 종료 코드\n"
+    "#   설명: 0이면 성공\n"
+)
+
+
+class TestBodyNoteMarkers(GitCase):
+    """23#3 본문 줄 끝 `# ---- N` 표식과 하단 노트 구역은 헤더 파서·lint·init·fix 결과를 바꾸지 않는다"""
+
+    def test_lint_same_with_and_without_markers(self) -> None:
+        """23#3 닫는 헤더 줄 `# ---`와 본문 `# ---- 1`이 섞여도 헤더 필드와 lint 결과가 같다"""
+        plain = py_file(CANONICAL_FIELDS, PLAIN_BODY)
+        marked = py_file(CANONICAL_FIELDS, MARKED_BODY)
+        h_plain = sh.extract_header(plain, "a.py")
+        h_marked = sh.extract_header(marked, "a.py")
+        self.assertEqual(h_marked.fields, h_plain.fields)
+        self.assertEqual(h_marked.end, h_plain.end)
+        ctx = sh.LintContext(path="a.py", root=self.tmp)
+        self.assertEqual(codes(sh.lint_text(marked, "a.py", ctx)),
+                         codes(sh.lint_text(plain, "a.py", ctx)))
+        self.assertEqual(sh.lint_text(marked, "a.py", ctx), [])
+        # 헤더가 없는 파일에서 본문 `# ---- 1`을 헤더로 오인하지 않는다
+        self.assertEqual(codes(sh.lint_text(MARKED_BODY, "a.py", ctx)),
+                         codes(sh.lint_text(PLAIN_BODY, "a.py", ctx)))
+
+    def test_init_keeps_body_untouched(self) -> None:
+        """23#3 init은 표식이 든 본문을 그대로 두고 표식 없는 파일과 같은 헤더를 넣는다"""
+        self.write("m.py", MARKED_BODY)
+        self.write("p.py", PLAIN_BODY)
+        self.git("add", ".")
+        self.commit("add", "2026-01-05")
+        self.assertEqual(self.cli("init", "m.py", "p.py").returncode, 0)
+        marked = (self.tmp / "m.py").read_text()
+        plain = (self.tmp / "p.py").read_text()
+        self.assertTrue(marked.endswith("# ---\n" + MARKED_BODY))
+        fields_m = dict(sh.extract_header(marked, "m.py").fields, title="")
+        fields_p = dict(sh.extract_header(plain, "p.py").fields, title="")
+        self.assertEqual(fields_m, fields_p)
+        # 임시 저장소에 LICENSE가 없어 B5 오류가 나는 것은 양쪽 같다. 표식 유무로 결과가 갈리지 않는다.
+        lint_m = self.cli("lint", "m.py")
+        lint_p = self.cli("lint", "p.py")
+        self.assertEqual(lint_m.returncode, lint_p.returncode)
+        self.assertEqual(lint_m.stdout.replace("m.py", "x"), lint_p.stdout.replace("p.py", "x"))
+
+    def test_fix_staged_same_with_markers(self) -> None:
+        """23#3 fix --staged는 표식 본문에서도 updated_date만 바꾸고 본문은 건드리지 않는다"""
+        old = dict(CANONICAL_FIELDS, updated_date="2026-10-02")
+        self.write("a.py", py_file(old, MARKED_BODY))
+        self.git("add", ".")
+        self.commit("base")
+        changed = MARKED_BODY.replace("return 0  # ---- 2", "return 1  # ---- 2")
+        self.write("a.py", py_file(old, changed))
+        self.git("add", "a.py")
+        res = self.cli("fix", "--staged")
+        self.assertEqual(res.returncode, 0, res.stdout + res.stderr)
+        text = (self.tmp / "a.py").read_text()
+        self.assertEqual(sh.extract_header(text, "a.py").fields["updated_date"], TODAY)
+        self.assertTrue(text.endswith("# ---\n" + changed))
+        self.assertEqual(self.cli("lint", "--staged").returncode, 0)
+
+
 if __name__ == "__main__":
     unittest.main()
