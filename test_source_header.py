@@ -1163,5 +1163,20 @@ class TestBodyNoteMarkers(GitCase):
         self.assertEqual(self.cli("lint", "--staged").returncode, 0)
 
 
+class TestNoteMarkerSpec(unittest.TestCase):
+    """23#1 23#2 23#4 본문 노트 표식 규격 문서와 템플릿"""
+
+    def readme(self) -> str:
+        return (HERE / "README.md").read_text(encoding="utf-8")
+
+    def test_readme_has_note_marker_section(self) -> None:
+        """23#1 23#B1 23#B2 README에 형식·하단 노트 구역·번호 규칙·예시가 있다"""
+        text = self.readme()
+        self.assertIn("## 본문 노트 표식", text)
+        for needle in ("---- N", "======== 노트 ========", "설명:", "관련:", "개념:",
+                       "1부터 연속", "일대일"):
+            self.assertIn(needle, text)
+
+
 if __name__ == "__main__":
     unittest.main()
