@@ -4,7 +4,7 @@ title: source-header 규격에 본문 노트 표식(---- N) 절 추가
 status: In Progress
 assignee: []
 created_date: '2026-11-06T11:12:00Z'
-updated_date: '2026-11-06T11:41:00Z'
+updated_date: '2026-11-06T11:44:00Z'
 labels:
   - source-header
   - spec
@@ -73,3 +73,9 @@ documentation:
 4. AC #4: README에 기존 주석 변환 규칙(B4) 추가.
 5. 테스트 전체 실행 후 AC·DoD 체크, final summary, Done.
 <!-- SECTION:PLAN:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+본문 노트 표식(줄 끝 '# ---- N' + 파일 하단 '======== 노트 ========' 구역) 규격을 README.md에 추가했다. 형식·접두사 표·번호 규칙(1부터 연속, 표식:노트 1:1)·예시와 기존 주석 변환 규칙(B4)을 담았다. @path는 title로(사용자 결정), @file은 title과 같으면 생략·다르면 [설계 메모]로 옮기고, @book은 description, @author 등은 대응 필드로 옮긴다. templates 5종(python, shell, typescript, go, sql)에 표식 예시를 넣었다. 줄 끝 표식이 헤더 파서·lint·init·fix에 영향을 주지 않음을 테스트(TestBodyNoteMarkers)로 확인했고 source-header.py는 바꾸지 않았다. 검증: uvx --with pytest pytest -q → 77 passed, 80 subtests passed; source-header lint --strict templates/ exit 0. 번호 연속성·관련 경로 lint는 범위 밖(후속 카드). 커밋 311d22a 70c95f1 e17f568 61cea12 7021497 8ade5d5.
+<!-- SECTION:FINAL_SUMMARY:END -->
