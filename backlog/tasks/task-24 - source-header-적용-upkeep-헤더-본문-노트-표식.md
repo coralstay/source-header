@@ -1,7 +1,7 @@
 ---
-id: DRAFT-7
+id: TASK-24
 title: 'source-header 적용: upkeep (헤더 + 본문 노트 표식)'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-11-06T11:56:00Z'
 updated_date: '2026-11-06T11:59:00Z'
