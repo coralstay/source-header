@@ -1178,6 +1178,13 @@ class TestNoteMarkerSpec(unittest.TestCase):
                        "1부터 연속", "일대일"):
             self.assertIn(needle, text)
 
+    def test_readme_has_conversion_rules(self) -> None:
+        """23#4 23#B4 README에 기존 주석 변환 규칙(@file/@path/@book 배너, 설명 주석)이 있다"""
+        text = self.readme()
+        self.assertIn("### 기존 주석 변환", text)
+        for needle in ("@file", "@path", "@book", "프론트매터", "정보를 버리지"):
+            self.assertIn(needle, text)
+
     def test_templates_have_marker_example(self) -> None:
         """23#2 23#B3 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
         prefixes = {"python.py": "#", "shell.sh": "#", "typescript.ts": "//", "go.go": "//",
