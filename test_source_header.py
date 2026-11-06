@@ -1184,6 +1184,8 @@ class TestNoteMarkerSpec(unittest.TestCase):
         self.assertIn("### 기존 주석 변환", text)
         for needle in ("@file", "@path", "@book", "프론트매터", "정보를 버리지"):
             self.assertIn(needle, text)
+        # 사용자 결정(2026-11-06): @path는 title로 옮긴다
+        self.assertIn("`@path` 배너 (저장소 기준 경로) | 프론트매터 `title`에 경로를 그대로 쓴다", text)
 
     def test_templates_have_marker_example(self) -> None:
         """23#2 23#B3 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
