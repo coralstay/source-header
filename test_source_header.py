@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import importlib.util
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -1176,6 +1177,20 @@ class TestNoteMarkerSpec(unittest.TestCase):
         for needle in ("---- N", "======== 노트 ========", "설명:", "관련:", "개념:",
                        "1부터 연속", "일대일"):
             self.assertIn(needle, text)
+
+    def test_templates_have_marker_example(self) -> None:
+        """23#2 23#B3 templates 5개에 언어별 접두사의 `---- N` 표식과 노트 구역이 있다"""
+        prefixes = {"python.py": "#", "shell.sh": "#", "typescript.ts": "//", "go.go": "//",
+                    "sql.sql": "--"}
+        for name, prefix in prefixes.items():
+            with self.subTest(name=name):
+                text = (HERE / "templates" / name).read_text(encoding="utf-8")
+                self.assertRegex(text, rf"(?m)\S  {re.escape(prefix)} ---- 1$")
+                self.assertIn(f"{prefix} ======== 노트 ========", text)
+                self.assertRegex(text, rf"(?m)^{re.escape(prefix)} 1 \S")
+                self.assertRegex(text, rf"(?m)^{re.escape(prefix)}   설명: \S")
+                ctx = sh.LintContext(path=name, root=HERE, strict=True)
+                self.assertEqual(sh.lint_text(text, name, ctx), [])
 
 
 if __name__ == "__main__":

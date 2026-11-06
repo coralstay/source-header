@@ -19,4 +19,10 @@
 # # upstream: https://example.com/repo  # 선택 · 외부 출처, 있으면 THIRD_PARTY_NOTICES.md에 기록
 # ---
 # [설계 메모] 무엇을 왜 이렇게 했는지 자유롭게 적는다.
-set -euo pipefail
+set -euo pipefail  # ---- 1
+
+# ======== 노트 ========
+# 1 진입점
+#   설명: 줄 끝에 번호만 달고 설명은 이 노트 구역에 모은다. 표식과 노트는 일대일이고 번호는 1부터 연속이다.
+#   관련: README.md (본문 노트 표식)
+#   개념: 표식 / 노트 구역
