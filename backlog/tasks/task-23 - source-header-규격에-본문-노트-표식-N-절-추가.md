@@ -4,7 +4,7 @@ title: source-header 규격에 본문 노트 표식(---- N) 절 추가
 status: In Progress
 assignee: []
 created_date: '2026-11-06T11:12:00Z'
-updated_date: '2026-11-06T11:36:00Z'
+updated_date: '2026-11-06T11:41:00Z'
 labels:
   - source-header
   - spec
@@ -37,18 +37,18 @@ documentation:
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 README.md에 '본문 노트 표식' 절이 있다: 형식, 하단 노트 구역, 번호 규칙, 예시
-- [ ] #2 templates/*(python.py, shell.sh, typescript.ts, go.go, sql.sql)에 ---- N 예시가 있고 source-header lint가 통과한다
-- [ ] #3 기존 테스트가 통과한다(줄 끝 표식이 헤더 파서에 영향을 주지 않음)
-- [ ] #4 README.md에 기존 주석 변환 규칙(B4)이 적혀 있다
+- [x] #1 README.md에 '본문 노트 표식' 절이 있다: 형식, 하단 노트 구역, 번호 규칙, 예시
+- [x] #2 templates/*(python.py, shell.sh, typescript.ts, go.go, sql.sql)에 ---- N 예시가 있고 source-header lint가 통과한다
+- [x] #3 기존 테스트가 통과한다(줄 끝 표식이 헤더 파서에 영향을 주지 않음)
+- [x] #4 README.md에 기존 주석 변환 규칙(B4)이 적혀 있다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 pytest 전체 통과 로그를 확인했다
-- [ ] #2 templates 5개가 source-header lint --strict를 통과했다
-- [ ] #3 README의 새 절이 AC #1·#4 항목을 모두 담고 있다
-- [ ] #4 도구 코드(source-header.py) 변경이 없거나, 있으면 유저 확인을 받았다
+- [x] #1 pytest 전체 통과 로그를 확인했다
+- [x] #2 templates 5개가 source-header lint --strict를 통과했다
+- [x] #3 README의 새 절이 AC #1·#4 항목을 모두 담고 있다
+- [x] #4 도구 코드(source-header.py) 변경이 없거나, 있으면 유저 확인을 받았다
 <!-- DOD:END -->
 
 ## Implementation Plan
