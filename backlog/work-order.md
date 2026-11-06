@@ -1,4 +1,4 @@
-<!-- work-order-hash: dbcc5e5969623e4b351674c2d3a0593a709b9435facc3bec73f023ad328c0a5a -->
+<!-- work-order-hash: 4043ac120661a96ded58a014a4e5c08d1622595df57f4f714cdb9e8348d5453a -->
 # 작업 순서
 
 `work_order.py`가 backlog/tasks의 의존(`dependencies`)으로 만든 파일이다 — 직접 고치지 말고 다시 생성한다. 같은 단계의 태스크는 병렬로, 단계는 위에서 아래로 순차로 진행한다. Done 태스크와 없는 태스크에 대한 의존은 충족된 것으로 본다.
@@ -14,6 +14,7 @@
 | 1 | TASK-17 | 중앙 점검 워크플로: 모든 public 저장소의 main-protect 규칙 자동 적용·복구 |
 | 1 | TASK-18 | 공개 전 민감정보 정리: Drive ID·책 데이터·로컬/VM 정보·실명·옛 이메일 |
 | 1 | TASK-19 | 신원·키·계정 보안 재설계: 사람 키(Secure Enclave)·AI 키(Claude·Antigravity)·이메일 비공개 |
+| 1 | TASK-24 | source-header 적용: upkeep (헤더 + 본문 노트 표식) |
 | 2 | TASK-4 | source-header 적용: dev-tools/central-docs-collector |
 | 2 | TASK-5 | source-header 적용: dev-tools/omnivim |
 | 2 | TASK-14 | source-header 적용: dev-tools/ebpf-wire-to-code-tracer |
