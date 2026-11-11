@@ -1202,5 +1202,39 @@ class TestNoteMarkerSpec(unittest.TestCase):
                 self.assertEqual(sh.lint_text(text, name, ctx), [])
 
 
+MAILMAP_LINE = re.compile(
+    r"^(?:[^<>#\s][^<>]*? )?<[^<>\s]+>(?: [^<>]+? <[^<>\s]+>| <[^<>\s]+>)?$|^[^<>#][^<>]*? <[^<>\s]+>$"
+)
+
+
+def tracked(path: str) -> bool:
+    res = subprocess.run(["git", "ls-files", "--error-unmatch", path], cwd=HERE,
+                         capture_output=True, text=True, check=False)
+    return res.returncode == 0
+
+
+class TestSelfConformance(unittest.TestCase):
+    """TASK-6 source-header 저장소가 자기 규격을 지키는지"""
+
+    def test_mailmap_is_tracked_and_valid(self) -> None:
+        """TASK-6#1 .mailmap이 저장소에 추적되고, 주석이 아닌 줄은 모두 유효한 mailmap 줄이다"""
+        if not (HERE / ".git").exists():
+            self.skipTest("git 저장소가 아님")
+        path = HERE / ".mailmap"
+        self.assertTrue(path.is_file())
+        self.assertTrue(tracked(".mailmap"), ".mailmap이 git에 추적되지 않는다")
+        lines = path.read_text(encoding="utf-8").splitlines()
+        self.assertTrue(lines, ".mailmap이 비어 있다")
+        for line in lines:
+            if not line.strip() or line.startswith("#"):
+                continue
+            with self.subTest(line=line):
+                self.assertRegex(line, MAILMAP_LINE)
+        # 어떤 신원도 coralstay가 아닌 이름으로 정규화되지 않는다(authors는 coralstay로 나와야 한다)
+        for line in lines:
+            if line.strip() and not line.startswith("#"):
+                self.assertTrue(line.startswith("coralstay "), line)
+
+
 if __name__ == "__main__":
     unittest.main()
