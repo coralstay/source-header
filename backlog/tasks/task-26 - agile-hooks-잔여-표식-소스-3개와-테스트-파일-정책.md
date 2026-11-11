@@ -1,10 +1,10 @@
 ---
 id: TASK-26
 title: 'agile-hooks 잔여 표식: 소스 3개와 테스트 파일 정책'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-11T11:34:00Z'
+updated_date: '2026-11-11T16:20:00Z'
 labels:
   - source-header
   - followup
