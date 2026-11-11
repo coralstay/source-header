@@ -1,10 +1,10 @@
 ---
 id: TASK-6
 title: 'source-header 적용: dev-tools/source-header'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-31T11:08:00Z'
-updated_date: '2026-11-06T12:11:00Z'
+updated_date: '2026-11-11T10:56:00Z'
 labels:
   - source-header
   - rollout
