@@ -1,7 +1,7 @@
 ---
-id: DRAFT-10
+id: TASK-25
 title: 'README: 헤더 주석이 ruff ERA001에 오탐되는 문제와 해결 안내'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
 updated_date: '2026-11-11T11:34:00Z'
