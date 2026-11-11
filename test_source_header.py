@@ -1250,6 +1250,27 @@ class TestSelfConformance(unittest.TestCase):
             header = sh.extract_header((HERE / name).read_text(encoding="utf-8"), name)
             self.assertEqual(header.fields["license"], "AGPL-3.0-only", name)
 
+    def test_config_valid_and_strict_lint_clean(self) -> None:
+        """TASK-6#3 .source-header.json이 유효하고, 실제 소스 파일이 모두 대상이며, description이 비어 있지 않고, lint --strict .가 출력 없이 0으로 끝난다"""
+        import json
+        config = json.loads((HERE / ".source-header.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(config), {"include", "exclude"})
+        for key in ("include", "exclude"):
+            self.assertIsInstance(config[key], list)
+            self.assertTrue(all(isinstance(g, str) for g in config[key]))
+        # 정직한 설정: 소스 파일(py·템플릿)은 제외 목록에 걸리지 않고 모두 lint 대상이다
+        excluded = [sh.glob_re(g) for g in config["exclude"]]
+        # README.md는 이 도구의 설계·규격 문서라 대상에 남긴다(헤더가 있고 TASK-1 테스트가 status에서 확인한다)
+        sources = ["source-header.py", "test_source_header.py", "README.md",
+                   *sorted(f"templates/{p.name}" for p in (HERE / "templates").iterdir())]
+        for rel in sources:
+            with self.subTest(rel=rel):
+                self.assertFalse(any(p.match(rel) for p in excluded))
+                header = sh.extract_header((HERE / rel).read_text(encoding="utf-8"), rel)
+                self.assertTrue(str(header.fields.get("description", "")).strip())
+        res = run_cli(["lint", "--strict", "."], HERE)
+        self.assertEqual((res.returncode, res.stdout, res.stderr), (0, "", ""))
+
 
 if __name__ == "__main__":
     unittest.main()
