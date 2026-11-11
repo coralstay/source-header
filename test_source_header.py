@@ -1235,6 +1235,21 @@ class TestSelfConformance(unittest.TestCase):
             if line.strip() and not line.startswith("#"):
                 self.assertTrue(line.startswith("coralstay "), line)
 
+    def test_license_is_agpl_text_and_readme_states_it(self) -> None:
+        """TASK-6#2 LICENSE는 GNU AGPL 3 원문이고, README 라이선스 절의 첫 문장이 AGPL-3.0-only를 선언하며, 모든 소스 헤더가 같은 값을 쓴다"""
+        text = (HERE / "LICENSE").read_text(encoding="utf-8")
+        head = [ln.strip() for ln in text.splitlines() if ln.strip()][:2]
+        self.assertEqual(head, ["GNU AFFERO GENERAL PUBLIC LICENSE", "Version 3, 19 November 2007"])
+        self.assertIn("END OF TERMS AND CONDITIONS", text)
+        self.assertEqual(sh.repo_license(HERE), "AGPL-3.0-only")
+        readme = (HERE / "README.md").read_text(encoding="utf-8")
+        section = readme.split("\n## 라이선스\n", 1)[1].split("\n## ", 1)[0]
+        first = next(ln for ln in section.splitlines() if ln.strip())
+        self.assertTrue(first.startswith("AGPL-3.0-only."), first)
+        for name in ("source-header.py", "test_source_header.py"):
+            header = sh.extract_header((HERE / name).read_text(encoding="utf-8"), name)
+            self.assertEqual(header.fields["license"], "AGPL-3.0-only", name)
+
 
 if __name__ == "__main__":
     unittest.main()
