@@ -3,10 +3,10 @@ id: TASK-27
 title: >-
   기존 주석을 본문 노트 포맷으로 변환 — dev-toolchain 1차 (scripts/lib.sh,
   scripts/install/00_select.sh)
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-12T01:54:00Z'
+updated_date: '2026-11-12T01:56:00Z'
 labels:
   - source-header
   - followup
