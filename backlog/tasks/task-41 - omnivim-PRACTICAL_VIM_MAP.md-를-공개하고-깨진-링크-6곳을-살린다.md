@@ -4,7 +4,7 @@ title: 'omnivim: PRACTICAL_VIM_MAP.md 를 공개하고 깨진 링크 6곳을 살
 status: In Progress
 assignee: []
 created_date: '2026-11-12T12:11:00Z'
-updated_date: '2026-11-12T12:35:00Z'
+updated_date: '2026-11-12T12:36:00Z'
 labels:
   - source-header
   - followup
@@ -43,6 +43,7 @@ all_tips.py, official_sources/, 공식 예제와 같은 실습 파일 공개. �
 - [ ] #3 .gitignore 와 .source-header.json 에서 이 파일 항목만 제거한다. git check-ignore 로 all_tips.py·official_sources/ 등은 여전히 무시됨을 보인다
 - [ ] #4 README 210행 문구에서 이 파일만 뺀다(나머지 비공개 항목 문구 불변). 변경은 그 줄뿐이다
 - [ ] #5 omnivim 의 모든 .md 상대 링크 전수 검사(URL 디코딩 포함)에서 깨진 링크가 0이다(변경 전 6건). source-header lint --strict . 오류 0, scripts/audit_all.py 의 문서 검사 항목이 통과한다
+- [ ] #6 근거 없는 홍보성 문구 정리(유저 지시 2026-11-12): PRACTICAL_VIM_MAP.md 17행, AI_AGENT_INTERFACE.md 16행 앞머리, JETBRAINS_VIM_KEYMAP_PRACTICE.md 16행만 삭제하고 저장소 추적 파일에서 기업명 문구가 0건이다
 <!-- AC:END -->
 
 ## Definition of Done
