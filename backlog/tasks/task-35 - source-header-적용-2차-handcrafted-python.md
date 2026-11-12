@@ -1,7 +1,7 @@
 ---
-id: DRAFT-21
+id: TASK-35
 title: 'source-header 적용 2차: handcrafted-python'
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
 updated_date: '2026-11-12T07:34:00Z'

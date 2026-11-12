@@ -1,7 +1,7 @@
 ---
-id: DRAFT-19
-title: 'source-header 적용 2차: databases'
-status: Draft
+id: TASK-30
+title: 'source-header 적용 2차: handcrafted-cpp'
+status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
 updated_date: '2026-11-12T07:34:00Z'
@@ -26,8 +26,8 @@ dependencies: []
 - 코드는 한 줄도 바뀌지 않는다(py ast, sh shfmt -mn, c/cpp 오브젝트, md 본문 바이트 동일).
 
 ## 대상
-~/githubs/freeride/databases (private). 소스 197개(practice 162 — main.* 54는 제외 — scripts 33, compose.yaml·docker-compose.yml), 다른 md 62개(PITFALLS.md 54 등). LICENSE 있음. 생성기 없음 → source-header init + 경로 기반 정해진 description으로 일괄 삽입.
-테스트: scripts/test.sh (Docker가 필요한 부분은 이 환경에서 못 돌릴 수 있다 — 건너뛴 것은 보고).
+~/githubs/freeride/handcrafted-cpp (private). 소스 39개(scripts 38: py 26·sh 11, main.cpp, swift 1), 다른 md 6개(EXTERNAL_LIBRARIES·PRACTICE_GUIDE·PROJECT_STRUCTURE 등). LICENSE 있음.
+생성기 scripts/apply_file_frontmatter.py가 @file/@path/@book 배너를 만든다(현재 배너 1개). 빌드·테스트: CMakeLists.txt, scripts/test.sh. 외부 라이브러리·책 데이터는 .gitignore로 이미 빠져 있다.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -35,8 +35,9 @@ dependencies: []
 - [ ] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
 - [ ] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
 - [ ] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
-- [ ] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
-- [ ] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
+- [ ] #4 생성기를 source-header 헤더를 내보내게 고친다: 옛 @file 배너를 헤더로 변환(@path→title, @book→description)하고 두 번 돌려도 결과가 같다(멱등). 생성기 테스트를 먼저 쓴다
+- [ ] #5 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
+- [ ] #6 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
 <!-- AC:END -->
 
 ## Definition of Done
@@ -51,13 +52,13 @@ dependencies: []
 
 <!-- SECTION:PLAN:BEGIN -->
 ### Subjective
-유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 databases을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
+유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 handcrafted-cpp을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
 
 ### Objective
-소스 197개(practice 162 중 main.* 54 제외, scripts 33, compose.yaml·docker-compose.yml), 다른 md 62개(PITFALLS.md 54 등). 생성기 없음. 테스트는 scripts/test.sh이고 Docker가 필요한 부분이 있다.
+소스 39개(scripts 38: py 26·sh 11, main.cpp, swift 1), 다른 md 6개. 생성기 scripts/apply_file_frontmatter.py가 @file/@path/@book 배너를 만든다(배너 1개). 빌드는 CMakeLists.txt, 테스트는 scripts/test.sh. practice/는 .gitignore로 추적되지 않는다.
 
 ### Assessment
-practice의 테스트·기타 파일(108)은 생성물이라 경로 기반으로 정해진 description을 스크립트로 넣는다. scripts 33개는 핵심은 표식까지. Docker가 필요한 테스트는 못 돌릴 수 있고 그러면 건너뛴 사실을 기록한다. 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
+scripts/ 38개는 손으로 쓴 도구라 핵심은 표식까지 단다. 생성기는 배너 대신 헤더를 내보내게 고친다(이 저장소의 practice는 로컬 생성물이라 일괄 변환 대상 파일은 적다). 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
 
 ### Plan
 1. worktree 생성(origin/main). 인프라 커밋: .mailmap, .source-header.json (AC #1 #2).

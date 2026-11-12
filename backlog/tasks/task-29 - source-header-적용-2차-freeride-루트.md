@@ -1,7 +1,7 @@
 ---
-id: DRAFT-18
-title: 'source-header 적용 2차: devOps-LifeCycle'
-status: Draft
+id: TASK-29
+title: 'source-header 적용 2차: freeride 루트'
+status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
 updated_date: '2026-11-12T07:34:00Z'
@@ -26,8 +26,7 @@ dependencies: []
 - 코드는 한 줄도 바뀌지 않는다(py ast, sh shfmt -mn, c/cpp 오브젝트, md 본문 바이트 동일).
 
 ## 대상
-~/githubs/freeride/devOps-LifeCycle (private). 소스 21개(scripts 6, .github 2, scenarios 3, 루트 설정 yaml·toml 등), 다른 md 72개(Lesson-and-learn.md 66 등), README.md 72개는 제외. 내용 대부분이 Terraform(.tf)이라 도구 미지원 → 헤더 불가. 자체 backlog가 있고 backlog/**(475개 카드)는 제외. LICENSE 있음.
-테스트: scripts/test.sh.
+~/githubs/freeride (GitHub coralstay/freeride, private). 소스 1개(layout.yaml). README.md는 제외. LICENSE는 이미 AGPL-3.0. 가장 작은 저장소라 이 라운드의 파일럿으로 먼저 한다.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -36,7 +35,6 @@ dependencies: []
 - [ ] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
 - [ ] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
 - [ ] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
-- [ ] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
 <!-- AC:END -->
 
 ## Definition of Done
@@ -51,13 +49,13 @@ dependencies: []
 
 <!-- SECTION:PLAN:BEGIN -->
 ### Subjective
-유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 devOps-LifeCycle을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
+유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 freeride(루트)을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
 
 ### Objective
-소스 21개(scripts 6, .github 2, scenarios 3, 루트 설정 yaml·toml 등)와 다른 md 72개(Lesson-and-learn.md 66 등). README.md 72개와 backlog/**(475개 카드)는 제외. 내용 대부분은 Terraform(.tf)이라 도구 미지원. 자체 backlog가 있고 .claude-code-agile-hooks.json이 있다(testFirst는 없음).
+소스는 layout.yaml 1개뿐(origin/main 기준). README.md는 제외. LICENSE는 이미 AGPL-3.0이고 GitHub도 인식한다. 이 저장소는 파일럿으로 가장 먼저 한다.
 
 ### Assessment
-대상이 적어 가볍다. .tf는 도구가 주석 접두사를 몰라 헤더를 못 단다(확장자 규칙 유지, 별도 판단 없음). 자체 backlog 게이트가 있으니 이 저장소 안에서 편집할 때 훅 동작을 먼저 확인한다. 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
+yaml 하나라 표식은 달 곳이 없다(헤더만). 이 카드로 2차 라운드의 흐름(worktree, 카드, 서명, PR)을 먼저 확인한다. 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
 
 ### Plan
 1. worktree 생성(origin/main). 인프라 커밋: .mailmap, .source-header.json (AC #1 #2).

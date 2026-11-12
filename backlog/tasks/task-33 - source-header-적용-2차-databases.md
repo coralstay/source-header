@@ -1,7 +1,7 @@
 ---
-id: DRAFT-17
-title: 'source-header 적용 2차: handcrafted-java'
-status: Draft
+id: TASK-33
+title: 'source-header 적용 2차: databases'
+status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
 updated_date: '2026-11-12T07:34:00Z'
@@ -26,8 +26,8 @@ dependencies: []
 - 코드는 한 줄도 바뀌지 않는다(py ast, sh shfmt -mn, c/cpp 오브젝트, md 본문 바이트 동일).
 
 ## 대상
-~/githubs/freeride/handcrafted-java (private). 소스 85개(src 77: main 39·test 38, scripts 6, practice 2 — main.java는 제외), 다른 md 4개. LICENSE 있음. 생성기 없음.
-빌드·테스트: ./gradlew test 또는 scripts/test.sh (JDK 필요).
+~/githubs/freeride/databases (private). 소스 197개(practice 162 — main.* 54는 제외 — scripts 33, compose.yaml·docker-compose.yml), 다른 md 62개(PITFALLS.md 54 등). LICENSE 있음. 생성기 없음 → source-header init + 경로 기반 정해진 description으로 일괄 삽입.
+테스트: scripts/test.sh (Docker가 필요한 부분은 이 환경에서 못 돌릴 수 있다 — 건너뛴 것은 보고).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -51,13 +51,13 @@ dependencies: []
 
 <!-- SECTION:PLAN:BEGIN -->
 ### Subjective
-유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 handcrafted-java을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
+유저(2026-11-12)가 비공개로 남은 저장소에도 공개한 11개와 같은 헤더·표식을 달라고 했다. 이 카드는 databases을 맡는다. 계획: ~/.claude/plans/shimmering-spinning-cherny.md.
 
 ### Objective
-소스 85개(src/main 39·src/test 38, scripts 6, practice 2 중 main.java는 제외), 다른 md 4개. 생성기 없음. 빌드·테스트는 gradle(./gradlew test) 또는 scripts/test.sh, JDK 필요.
+소스 197개(practice 162 중 main.* 54 제외, scripts 33, compose.yaml·docker-compose.yml), 다른 md 62개(PITFALLS.md 54 등). 생성기 없음. 테스트는 scripts/test.sh이고 Docker가 필요한 부분이 있다.
 
 ### Assessment
-Java는 줄 끝 표식을 걷어낸 파일이 변경 전과 같은지와 빌드·테스트로 코드 무변경을 증명한다(agent-orchestrator 때와 같은 방식). 테스트 38개는 헤더만. 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
+practice의 테스트·기타 파일(108)은 생성물이라 경로 기반으로 정해진 description을 스크립트로 넣는다. scripts 33개는 핵심은 표식까지. Docker가 필요한 테스트는 못 돌릴 수 있고 그러면 건너뛴 사실을 기록한다. 모든 작업은 origin/main에서 판 git worktree에서 하고 로컬 작업 폴더는 건드리지 않는다. 읽기가 필요한 부분(description·표식)은 서브에이전트(새 컨텍스트)에 맡기고, 에이전트 보고는 믿지 않고 같은 검증을 다시 돌린다. 에이전트는 편집만 하고 커밋은 내가 한다.
 
 ### Plan
 1. worktree 생성(origin/main). 인프라 커밋: .mailmap, .source-header.json (AC #1 #2).
