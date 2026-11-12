@@ -1280,6 +1280,22 @@ class TestLinterConflictDoc(unittest.TestCase):
                        "per-file-ignores", "3304c28", "282"):
             self.assertIn(needle, section)
 
+    def test_readme_example_toml_parses_with_era001_ignored(self) -> None:
+        """TASK-25#2 README 예시의 toml 코드 블록이 tomllib으로 파싱되고 per-file-ignores에 ERA001을 담는다"""
+        import tomllib
+        blocks = re.findall(r"(?ms)^```toml\n(.*?)^```$", self.section())
+        self.assertEqual(len(blocks), 1)
+        ignores = tomllib.loads(blocks[0])["tool"]["ruff"]["lint"]["per-file-ignores"]
+        self.assertEqual(ignores, {"src/**/*.py": ["ERA001"], "tests/**/*.py": ["ERA001"]})
+
+    def test_readme_states_markers_only_in_source_files(self) -> None:
+        """TASK-25#3 README 본문 노트 표식 절에 '표식은 소스 파일에만, 테스트 파일은 헤더만' 방침이 한 줄로 있다"""
+        text = (HERE / "README.md").read_text(encoding="utf-8")
+        section = text.split("\n## 본문 노트 표식\n", 1)[1].split("\n## ", 1)[0]
+        policy = [ln for ln in section.splitlines()
+                  if "소스 파일에만" in ln and "테스트 파일" in ln and "헤더만" in ln]
+        self.assertEqual(len(policy), 1, policy)
+
 
 # == Coverage ==
 
