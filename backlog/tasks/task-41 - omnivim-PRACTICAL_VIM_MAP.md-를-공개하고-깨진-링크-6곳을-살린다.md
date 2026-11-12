@@ -1,10 +1,10 @@
 ---
 id: TASK-41
 title: 'omnivim: PRACTICAL_VIM_MAP.md 를 공개하고 깨진 링크 6곳을 살린다'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-12T12:11:00Z'
-updated_date: '2026-11-12T12:16:00Z'
+updated_date: '2026-11-12T12:20:00Z'
 labels:
   - source-header
   - followup
