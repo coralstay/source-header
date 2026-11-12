@@ -6,7 +6,7 @@ title: >-
 status: In Progress
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-12T01:56:00Z'
+updated_date: '2026-11-12T02:55:00Z'
 labels:
   - source-header
   - followup
@@ -36,17 +36,17 @@ dev-toolchain PR #1(task/TASK-175)을 기준으로 한다(병합 전이면 그 �
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 scripts/lib.sh에서 표식 지점을 설명하는 주석을 해당 노트의 설명으로 옮기고 원 주석 줄을 지운다(구분선·지시 주석·자명한 주석은 그대로)
-- [ ] #2 scripts/install/00_select.sh에 같은 변환을 한다
-- [ ] #3 두 파일의 코드가 바뀌지 않았다: bash -n 통과, shfmt -mn으로 주석을 걷어낸 구조가 변환 전과 같다
+- [x] #1 scripts/lib.sh에서 표식 지점을 설명하는 주석을 해당 노트의 설명으로 옮기고 원 주석 줄을 지운다(구분선·지시 주석·자명한 주석은 그대로)
+- [x] #2 scripts/install/00_select.sh에 같은 변환을 한다
+- [x] #3 두 파일의 코드가 바뀌지 않았다: bash -n 통과, shfmt -mn으로 주석을 걷어낸 구조가 변환 전과 같다
 - [ ] #4 옮긴 주석의 내용이 노트에 있다: 지운 주석 줄마다 노트 텍스트에서 단어 일치율을 검사해 낮은 줄 목록을 검토하고 정리한다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 shellspec 전체 통과(출력을 Implementation Notes에 첨부)
-- [ ] #2 source-header lint --strict 통과, 표식 번호 연속·노트 1:1 유지
-- [ ] #3 변환 전후 주석 전용 줄 수와 지운 줄 수를 Implementation Notes에 기록
+- [x] #1 shellspec 전체 통과(출력을 Implementation Notes에 첨부)
+- [x] #2 source-header lint --strict 통과, 표식 번호 연속·노트 1:1 유지
+- [x] #3 변환 전후 주석 전용 줄 수와 지운 줄 수를 Implementation Notes에 기록
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -69,3 +69,18 @@ dev-toolchain PR #1(task/TASK-175)을 기준으로 한다(병합 전이면 그 �
 3. 검증: bash -n, shfmt -mn 구조 동일, shellspec, lint --strict, 단어 일치율 검사, 주석 줄 수 전후 비교.
 4. 결과를 PR로 올린다(dev-toolchain PR #1 위).
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-12 구현·검증 기록 (저장소 dev-toolchain, 브랜치 task/SH-27 — dev-toolchain에 별개의 TASK-27(Done)이 있어 task/TASK-27에서 이름을 바꿨다. 커밋 4f7331d, 푸시 전)
+- AC #1 lib.sh: 표식 18개 지점의 설명 주석 249줄을 노트로 옮기고 지웠다(노트에 63줄 추가). 주석 전용 줄 1,633 → 1,448.
+- AC #2 00_select.sh: 표식 11개 중 8개(1,3,6,7,8,9,10,11)에서 61줄을 옮겼다. 표식 2·4·5는 주석이 다른 관심사와 섞여 있어 지우지 않았다. 주석 전용 줄 548 → 499.
+- AC #3(직접 실행): 두 파일 bash -n 통과. shfmt -mn으로 주석을 걷어낸 구조가 HEAD와 동일(lib.sh 637줄, 00_select.sh 369줄). 지운 줄은 전부 주석이다(커밋 diff: 추가 75줄, 삭제 309줄).
+- DoD #1(직접 실행): shellspec 228 examples, 0 failures. 첫 실행에서 install_runtimes_spec 한 예제가 WARNED로 떴으나 재실행에서는 나오지 않았다(간헐, 변경 전부터인지는 확인하지 못함).
+- DoD #2(직접 실행): source-header lint --strict . exit 0. 표식 번호 1..18, 1..11 연속이고 노트와 1:1.
+- DoD #3: 주석 전용 줄 합계 2,181 → 1,947(-234). 지운 줄 249 + 61 = 310, 노트에 추가된 줄 일부는 주석이라 순감이 이보다 작다.
+- AC #4는 체크하지 않았다. 요구한 단어 일치율 검사는 영어 주석을 한국어 노트로 다시 썼기 때문에 대부분 50% 미만으로 나와 의미가 없었다. 대신 에이전트가 식별자·참조 토큰 검사를 했다(lib.sh 254개 중 105개 누락 — 전부 번역된 영어 단어 또는 표식 함수 자신의 이름, 00_select.sh 92개 중 구두점이 붙은 단어와 분리 표기된 참조뿐). 제가 직접 읽어 확인한 것은 00_select.sh 표식 1 하나(POSIX 특수 내장 이유가 노트에 있음)다. 의미 보존을 자동으로 증명하지 못했고 나머지 표식은 읽지 않았다 — 유저 판단 필요.
+- 일부 노트에서 기존 설명과 새로 붙은 문장이 같은 사실을 반복한다.
+- 변환하지 않고 남긴 것: 약 1,950줄(문서화 블록, 구분선, 함수 본문 안 주석, 표식이 없는 지점의 설명).
+<!-- SECTION:NOTES:END -->
