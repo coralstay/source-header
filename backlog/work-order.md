@@ -1,4 +1,4 @@
-<!-- work-order-hash: 0cf7d873b6cdc6215a0705e885f08d674810a263991b02f0fad49dc99effc98e -->
+<!-- work-order-hash: 9b597463c66e48fa246196f553f4bcef84d310e935c1e1c5dcba8cf90ec7eb5b -->
 # 작업 순서
 
 `work_order.py`가 backlog/tasks의 의존(`dependencies`)으로 만든 파일이다 — 직접 고치지 말고 다시 생성한다. 같은 단계의 태스크는 병렬로, 단계는 위에서 아래로 순차로 진행한다. Done 태스크와 없는 태스크에 대한 의존은 충족된 것으로 본다.
@@ -30,6 +30,7 @@
 | 1 | TASK-37 | source-header 후속: databases 재생성 스크립트가 헤더를 지우지 않게 한다 |
 | 1 | TASK-38 | source-header 후속: handcrafted-cpp 재생성 스크립트가 헤더를 지우지 않게 한다 |
 | 1 | TASK-39 | source-header 후속: coding-style 재생성 스크립트가 헤더를 지우지 않게 한다 |
+| 1 | TASK-40 | doctree: README 의 깨진 상대 링크(비공개 저장소 파일) 제거 |
 | 2 | TASK-4 | source-header 적용: dev-tools/central-docs-collector |
 | 2 | TASK-5 | source-header 적용: dev-tools/omnivim |
 | 2 | TASK-14 | source-header 적용: dev-tools/ebpf-wire-to-code-tracer |
