@@ -1,4 +1,4 @@
-<!-- work-order-hash: 4043ac120661a96ded58a014a4e5c08d1622595df57f4f714cdb9e8348d5453a -->
+<!-- work-order-hash: fbe165805bac2ffe4a578c38df0b8fe645ce6350c4ee757496122c2778b563fb -->
 # 작업 순서
 
 `work_order.py`가 backlog/tasks의 의존(`dependencies`)으로 만든 파일이다 — 직접 고치지 말고 다시 생성한다. 같은 단계의 태스크는 병렬로, 단계는 위에서 아래로 순차로 진행한다. Done 태스크와 없는 태스크에 대한 의존은 충족된 것으로 본다.
@@ -15,6 +15,8 @@
 | 1 | TASK-18 | 공개 전 민감정보 정리: Drive ID·책 데이터·로컬/VM 정보·실명·옛 이메일 |
 | 1 | TASK-19 | 신원·키·계정 보안 재설계: 사람 키(Secure Enclave)·AI 키(Claude·Antigravity)·이메일 비공개 |
 | 1 | TASK-24 | source-header 적용: upkeep (헤더 + 본문 노트 표식) |
+| 1 | TASK-25 | README: 헤더 주석이 ruff ERA001에 오탐되는 문제와 해결 안내 |
+| 1 | TASK-26 | agile-hooks 잔여 표식: 소스 3개와 테스트 파일 정책 |
 | 2 | TASK-4 | source-header 적용: dev-tools/central-docs-collector |
 | 2 | TASK-5 | source-header 적용: dev-tools/omnivim |
 | 2 | TASK-14 | source-header 적용: dev-tools/ebpf-wire-to-code-tracer |
