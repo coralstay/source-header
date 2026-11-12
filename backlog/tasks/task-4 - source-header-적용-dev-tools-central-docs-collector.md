@@ -1,10 +1,10 @@
 ---
 id: TASK-4
 title: 'source-header 적용: dev-tools/central-docs-collector'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-10-31T11:08:00Z'
-updated_date: '2026-10-31T11:45:00Z'
+updated_date: '2026-11-06T13:03:00Z'
 labels:
   - source-header
   - rollout
@@ -39,35 +39,57 @@ LICENSE 없음 → AGPL-3.0 LICENSE 추가
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
-- [ ] #2 라이선스 조치를 마친다: LICENSE 없음 → AGPL-3.0 LICENSE 추가
-- [ ] #3 .source-header.json을 확정하고(제외 대상 재확인) source-header init으로 헤더를 넣고, 서브에이전트가 description 초안을 쓴다. source-header lint 오류 0
-- [ ] #4 git-commit-tool --plugins source-header로 .githooks를 설치하고(core.hooksPath=.githooks) 헤더 없는 파일 커밋이 막히는 것을 실측한다
+- [x] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
+- [x] #2 라이선스 조치를 마친다: LICENSE 없음 → AGPL-3.0 LICENSE 추가
+- [x] #3 .source-header.json을 확정하고(제외 대상 재확인) source-header init으로 헤더를 넣고, 서브에이전트가 description 초안을 쓴다. source-header lint 오류 0
+- [x] #4 규격(source-header README '본문 노트 표식', TASK-23)에 따라 중요한 지점(진입점·불변식·비자명한 결정·외부 연동)의 줄 끝에 '---- N' 표식을 달고 파일 맨 아래 노트 구역에 설명을 쓴다. 이미 있는 주석(@file/@path/@book 배너, 설명 주석)은 변환 규칙(B4)으로 새 포맷에 옮기고 정보를 버리지 않는다. 번호는 파일마다 1부터 연속, 표식:노트 1:1. 주석·헤더 외 코드 줄은 바뀌지 않는다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 source-header lint . 오류 0 (출력을 Implementation Notes에 첨부)
-- [ ] #2 저장소의 기존 테스트·빌드가 헤더 추가 후에도 통과
-- [ ] #3 유저가 description diff를 검토
+- [x] #1 source-header lint . 오류 0 (출력을 Implementation Notes에 첨부)
+- [x] #2 저장소의 기존 테스트·빌드가 헤더 추가 후에도 통과
+- [x] #3 유저가 description diff를 검토
+- [x] #4 표식 번호가 파일마다 1부터 연속이고 표식:노트가 1:1임을 확인한 출력과, git diff에 주석·헤더 외 변경이 없음을 확인한 결과를 Implementation Notes에 첨부했다
 <!-- DOD:END -->
 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
 ### Subjective
-유저가 ~/githubs 기존 파일 전체에 소스 헤더 적용을 결정했다(2026-10-31). 이 카드는 `dev-tools/central-docs-collector` 담당.
+유저(2026-11-06)가 GitHub에 올라간 저장소 전부의 소스에 프론트매터·라이선스·본문 노트 표식을 달기로 했다. 이 카드는 dev-tools/central-docs-collector 한 저장소를 헤더 적용(AC #1~#4)과 표식(AC #5)까지 한 번에 맡는다. 규격은 source-header README '본문 노트 표식'(TASK-23)이다.
 
 ### Objective
-TASK-3 조사 결과는 Description 참고. source-header(init/lint/fix/hook)와 git-commit-tool .githooks(GF-148)가 준비됐고, --plugins 옵션은 git-commit-tool 별도 draft에서 추가한다.
+소스는 central-docs-collector.py(2,067줄)와 test_central_docs_collector.py 두 개. 기존 배너(File Name·Author·Updated At·Description)와 사용법 가이드·흐름도가 맨 위에 길게 있다. LICENSE 없음. GitHub main과 로컬 일치.
 
 ### Assessment
-헤더는 git에서 유도 가능한 값은 init에 맡기고 description만 서브에이전트가 쓴다. 생성물은 생성기에서 헤더를 넣는다. 커밋은 단계별로 나눠 diff 검토가 쉽게 한다.
+기존 배너가 길어 B4로 옮길 때 사용법·흐름도는 닫는 --- 뒤 [설계 메모]에 그대로 보존한다(맨 위가 두꺼워지는 점을 유저가 diff에서 확인). 표식은 사람이 읽고 판단해야 해서 토큰이 많이 든다. 헤더 삽입(기계)과 표식(읽기)을 커밋으로 나누고, 표식은 디렉터리 단위 서브에이전트(새 컨텍스트)에 맡긴다.
 
 ### Plan
-1. .mailmap 커밋
-2. 라이선스 조치 커밋
-3. .source-header.json → init → description 초안(서브에이전트) → lint 0 → 커밋(파일이 많으면 디렉터리 단위로 나눔)
-4. (해당 시) 생성기 수정
-5. .githooks 설치(--plugins source-header) → 실측
+1. 인프라 커밋: .mailmap(전역 ~/.mailmap과 같은 매핑) · LICENSE 조치 · .source-header.json 확정 · .githooks 설치(core.hooksPath) (AC #1 #2 #4).
+2. 헤더 삽입 커밋: source-header init → lint 오류 0 (AC #3).
+3. description 커밋: 서브에이전트가 초안을 쓰고 유저가 diff를 검토한다 (AC #3, DoD #3).
+4. 표식 커밋: 디렉터리 단위 서브에이전트가 파일을 읽고 중요한 지점에만 줄 끝 '---- N'과 하단 노트를 단다. 기존 주석은 B4로 변환한다 (AC #5).
+5. 검증: lint --strict, 번호 연속·1:1 확인 스크립트, 기존 테스트·빌드, git diff에 주석·헤더 외 변경 없음.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-11-06 유저 결정: AC '.githooks 설치(--plugins source-header)'는 후속 draft(source-header DRAFT-7, GF-149 이후)로 분리했다. 이 카드의 AC 번호가 이에 맞춰 당겨졌다(표식 AC 번호 -1).
+
+2026-11-06 구현·검증 기록 (저장소 central-docs-collector, 브랜치 task/TASK-4, 커밋 6c59600 58cc66e 16aee3b, 푸시 안 함)
+- AC #1: .mailmap은 전역 ~/.mailmap과 같다. 전역 파일은 주석뿐이라 매핑이 비어 있다(새 출발 뒤 옛 신원이 없다).
+- AC #2: LICENSE는 이미 AGPL-3.0 본문(첫 줄 확인), README는 AGPL-3.0-only. 카드의 'LICENSE 없음'은 낡은 내용이라 변경 없음.
+- AC #3: .source-header.json은 카드 초안 그대로. 두 .py에 헤더와 한 줄 description. lint --strict . 출력 없음, exit 0(직접 실행).
+- AC #4: central-docs-collector.py 표식 14·노트 14, test_central_docs_collector.py 표식 4·노트 4. 번호 1..N 연속, 1:1(직접 확인). 두 파일 ast.dump가 main과 같다(직접 확인).
+- DoD #2: python3 central-docs-collector.py --test 정상 종료(직접 실행). pytest 23 passed·23 subtests는 서브에이전트 보고. ruff check . 38개 오류는 변경 전과 같다(서브에이전트 보고, 직접 비교는 안 함).
+- DoD #3: 유저가 description 286개(8개 저장소) 중 무작위 20개를 샘플 검토하고 '그래도 모두 남겨'라고 결정했다. 템플릿형 설명(테스트 파일)이 있으나 그대로 둔다.
+- AC '.githooks 설치'는 유저 결정으로 후속 draft(source-header DRAFT-7, GF-149 이후)로 분리했다.
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+central-docs-collector에 source-header 헤더(프론트매터·AGPL-3.0-only·한 줄 description)와 본문 노트 표식(수집기 14·테스트 4)을 적용했다. 기존 배너의 사용법 가이드·흐름도는 [설계 메모]로 그대로 보존했다. 두 .py의 AST가 main과 같고 lint --strict 0 오류, --test 정상, 표식:노트 1:1 연속. LICENSE는 이미 AGPL이라 변경 없음. .githooks 설치는 GF-149 이후 후속 draft로 분리. 커밋 6c59600 58cc66e 16aee3b(저장소 central-docs-collector, 브랜치 task/TASK-4, 미push).
+<!-- SECTION:FINAL_SUMMARY:END -->

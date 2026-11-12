@@ -33,7 +33,7 @@ spec = importlib.util.spec_from_file_location("source_header", MODULE_PATH)
 assert spec is not None and spec.loader is not None
 sh = importlib.util.module_from_spec(spec)
 sys.modules["source_header"] = sh
-spec.loader.exec_module(sh)
+spec.loader.exec_module(sh)  # ---- 1
 
 # ~/githubs 아래 이웃 저장소(claude-code-agile-hooks)의 work_order.py. 없으면 관련 테스트는 건너뛴다.
 WORK_ORDER = (
@@ -76,7 +76,7 @@ def fields_with(**changes) -> dict:
 def run_cli(args: list[str], cwd) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, str(MODULE_PATH), *args],
-        cwd=cwd, capture_output=True, text=True, check=False,
+        cwd=cwd, capture_output=True, text=True, check=False,  # ---- 2
     )
 
 
@@ -1055,44 +1055,6 @@ class TestMailmapAuthors(GitCase):
         self.assertEqual(sh.git_user(self.tmp), "someone")
 
 
-# == Coverage ==
-
-
-class TestCoverageEdges(TempDirCase):
-    """규칙이 아니라 경계 동작을 채우는 테스트"""
-
-    def test_list_with_comma_uses_block_form(self) -> None:
-        fields = {"title": "t", "authors": ["Hong, Gil-Dong", "b"]}
-        block = sh.render_header(fields, "//")
-        self.assertIn("//   - Hong, Gil-Dong", block)
-        self.assertEqual(sh.extract_header(block, "a.ts").fields, fields)
-
-    def test_set_field_inserts_missing_key(self) -> None:
-        text = py_file(fields_with(updated_date=None))
-        out = sh.set_field(text, "a.py", "updated_date", "2026-10-31")
-        self.assertEqual(sh.extract_header(out, "a.py").fields["updated_date"], "2026-10-31")
-        self.assertEqual(sh.set_field("x = 1\n", "a.py", "k", "v"), "x = 1\n")
-
-    def test_glob_semantics(self) -> None:
-        self.assertTrue(sh.glob_re("**/node_modules/**").match("node_modules/a.js"))
-        self.assertTrue(sh.glob_re("**/node_modules/**").match("a/b/node_modules/c/d.js"))
-        self.assertFalse(sh.glob_re("src/*.py").match("src/a/b.py"))
-        self.assertTrue(sh.glob_re("src/?.py").match("src/a.py"))
-        self.assertFalse(sh.glob_re("a[1].py").match("a1.py"))  # [ 는 글자 그대로
-
-    def test_cli_misc_errors(self) -> None:
-        self.assertEqual(run_cli(["fix"], self.tmp).returncode, 2)
-        res = run_cli(["lint", "nope.py"], self.tmp)
-        self.assertIn("no such file", res.stderr)
-        self.assertEqual(res.returncode, 2)
-
-    def test_crlf_and_encoding_line(self) -> None:
-        text = "# -*- coding: utf-8 -*-\n" + py_file(CANONICAL_FIELDS)
-        self.assertEqual(sh.extract_header(text, "a.py").start, 2)
-        crlf = py_file(CANONICAL_FIELDS).replace("\n", "\r\n")
-        self.assertEqual(sh.extract_header(crlf, "a.py").fields["status"], "draft")
-
-
 PLAIN_BODY = "def main():\n    run()\n    return 0\n"
 MARKED_BODY = (
     "def main():\n"
@@ -1202,5 +1164,156 @@ class TestNoteMarkerSpec(unittest.TestCase):
                 self.assertEqual(sh.lint_text(text, name, ctx), [])
 
 
+MAILMAP_LINE = re.compile(
+    r"^(?:[^<>#\s][^<>]*? )?<[^<>\s]+>(?: [^<>]+? <[^<>\s]+>| <[^<>\s]+>)?$|^[^<>#][^<>]*? <[^<>\s]+>$"
+)
+
+
+def tracked(path: str) -> bool:
+    res = subprocess.run(["git", "ls-files", "--error-unmatch", path], cwd=HERE,
+                         capture_output=True, text=True, check=False)
+    return res.returncode == 0
+
+
+class TestSelfConformance(unittest.TestCase):
+    """TASK-6 source-header 저장소가 자기 규격을 지키는지"""
+
+    def test_mailmap_is_tracked_and_valid(self) -> None:
+        """TASK-6#1 .mailmap이 저장소에 추적되고, 주석이 아닌 줄은 모두 유효한 mailmap 줄이다"""
+        if not (HERE / ".git").exists():
+            self.skipTest("git 저장소가 아님")
+        path = HERE / ".mailmap"
+        self.assertTrue(path.is_file())
+        self.assertTrue(tracked(".mailmap"), ".mailmap이 git에 추적되지 않는다")
+        lines = path.read_text(encoding="utf-8").splitlines()
+        self.assertTrue(lines, ".mailmap이 비어 있다")
+        for line in lines:
+            if not line.strip() or line.startswith("#"):
+                continue
+            with self.subTest(line=line):
+                self.assertRegex(line, MAILMAP_LINE)
+        # 어떤 신원도 coralstay가 아닌 이름으로 정규화되지 않는다(authors는 coralstay로 나와야 한다)
+        for line in lines:
+            if line.strip() and not line.startswith("#"):
+                self.assertTrue(line.startswith("coralstay "), line)
+
+    def test_license_is_agpl_text_and_readme_states_it(self) -> None:
+        """TASK-6#2 LICENSE는 GNU AGPL 3 원문이고, README 라이선스 절의 첫 문장이 AGPL-3.0-only를 선언하며, 모든 소스 헤더가 같은 값을 쓴다"""
+        text = (HERE / "LICENSE").read_text(encoding="utf-8")
+        head = [ln.strip() for ln in text.splitlines() if ln.strip()][:2]
+        self.assertEqual(head, ["GNU AFFERO GENERAL PUBLIC LICENSE", "Version 3, 19 November 2007"])
+        self.assertIn("END OF TERMS AND CONDITIONS", text)
+        self.assertEqual(sh.repo_license(HERE), "AGPL-3.0-only")
+        readme = (HERE / "README.md").read_text(encoding="utf-8")
+        section = readme.split("\n## 라이선스\n", 1)[1].split("\n## ", 1)[0]
+        first = next(ln for ln in section.splitlines() if ln.strip())
+        self.assertTrue(first.startswith("AGPL-3.0-only."), first)
+        for name in ("source-header.py", "test_source_header.py"):
+            header = sh.extract_header((HERE / name).read_text(encoding="utf-8"), name)
+            self.assertEqual(header.fields["license"], "AGPL-3.0-only", name)
+
+    def test_config_valid_and_strict_lint_clean(self) -> None:
+        """TASK-6#3 .source-header.json이 유효하고, 실제 소스 파일이 모두 대상이며, description이 비어 있지 않고, lint --strict .가 출력 없이 0으로 끝난다"""
+        import json
+        config = json.loads((HERE / ".source-header.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(config), {"include", "exclude"})
+        for key in ("include", "exclude"):
+            self.assertIsInstance(config[key], list)
+            self.assertTrue(all(isinstance(g, str) for g in config[key]))
+        # 정직한 설정: 소스 파일(py·템플릿)은 제외 목록에 걸리지 않고 모두 lint 대상이다
+        excluded = [sh.glob_re(g) for g in config["exclude"]]
+        # README.md는 이 도구의 설계·규격 문서라 대상에 남긴다(헤더가 있고 TASK-1 테스트가 status에서 확인한다)
+        sources = ["source-header.py", "test_source_header.py", "README.md",
+                   *sorted(f"templates/{p.name}" for p in (HERE / "templates").iterdir())]
+        for rel in sources:
+            with self.subTest(rel=rel):
+                self.assertFalse(any(p.match(rel) for p in excluded))
+                header = sh.extract_header((HERE / rel).read_text(encoding="utf-8"), rel)
+                self.assertTrue(str(header.fields.get("description", "")).strip())
+        res = run_cli(["lint", "--strict", "."], HERE)
+        self.assertEqual((res.returncode, res.stdout, res.stderr), (0, "", ""))  # ---- 3
+
+    def test_own_sources_have_consecutive_one_to_one_note_markers(self) -> None:
+        """TASK-6#4 source-header.py·test_source_header.py의 줄 끝 표식은 1부터 연속이고 하단 노트와 일대일이며 각 노트에 설명이 있다"""
+        rule = "# " + "=" * 8 + " 노트 " + "=" * 8
+        marker_re = re.compile(r"\S  # " + "-" * 4 + r" (\d+)$")
+        note_re = re.compile(r"# (\d+) \S")
+        for name in ("source-header.py", "test_source_header.py"):
+            with self.subTest(name=name):
+                lines = (HERE / name).read_text(encoding="utf-8").splitlines()
+                self.assertEqual(lines.count(rule), 1, "노트 구분선은 정확히 하나")
+                cut = lines.index(rule)
+                body, notes = lines[:cut], lines[cut + 1:]
+                marks = [int(m.group(1)) for ln in body if (m := marker_re.search(ln))]
+                self.assertTrue(marks, "표식이 하나 이상")
+                self.assertEqual(marks, list(range(1, len(marks) + 1)), "위에서 아래로 1부터 연속")
+                titles = [int(m.group(1)) for ln in notes if (m := note_re.match(ln))]
+                self.assertEqual(titles, marks, "표식과 노트는 일대일")
+                self.assertTrue(all(ln.startswith("#") for ln in notes), "노트 구역은 모두 주석")
+                for n in marks:
+                    start = notes.index(next(ln for ln in notes if note_re.match(ln)
+                                             and int(note_re.match(ln).group(1)) == n))
+                    detail = []
+                    for ln in notes[start + 1:]:
+                        if note_re.match(ln):
+                            break
+                        detail.append(ln)
+                    self.assertTrue(any(ln.startswith("#   설명: ") for ln in detail),
+                                    f"노트 {n}에 설명 줄 없음")
+
+
+# == Coverage ==
+
+
+class TestCoverageEdges(TempDirCase):
+    """규칙이 아니라 경계 동작을 채우는 테스트"""
+
+    def test_list_with_comma_uses_block_form(self) -> None:
+        fields = {"title": "t", "authors": ["Hong, Gil-Dong", "b"]}
+        block = sh.render_header(fields, "//")
+        self.assertIn("//   - Hong, Gil-Dong", block)
+        self.assertEqual(sh.extract_header(block, "a.ts").fields, fields)
+
+    def test_set_field_inserts_missing_key(self) -> None:
+        text = py_file(fields_with(updated_date=None))
+        out = sh.set_field(text, "a.py", "updated_date", "2026-10-31")
+        self.assertEqual(sh.extract_header(out, "a.py").fields["updated_date"], "2026-10-31")
+        self.assertEqual(sh.set_field("x = 1\n", "a.py", "k", "v"), "x = 1\n")
+
+    def test_glob_semantics(self) -> None:
+        self.assertTrue(sh.glob_re("**/node_modules/**").match("node_modules/a.js"))
+        self.assertTrue(sh.glob_re("**/node_modules/**").match("a/b/node_modules/c/d.js"))
+        self.assertFalse(sh.glob_re("src/*.py").match("src/a/b.py"))
+        self.assertTrue(sh.glob_re("src/?.py").match("src/a.py"))
+        self.assertFalse(sh.glob_re("a[1].py").match("a1.py"))  # [ 는 글자 그대로
+
+    def test_cli_misc_errors(self) -> None:
+        self.assertEqual(run_cli(["fix"], self.tmp).returncode, 2)
+        res = run_cli(["lint", "nope.py"], self.tmp)
+        self.assertIn("no such file", res.stderr)
+        self.assertEqual(res.returncode, 2)
+
+    def test_crlf_and_encoding_line(self) -> None:
+        text = "# -*- coding: utf-8 -*-\n" + py_file(CANONICAL_FIELDS)
+        self.assertEqual(sh.extract_header(text, "a.py").start, 2)
+        crlf = py_file(CANONICAL_FIELDS).replace("\n", "\r\n")
+        self.assertEqual(sh.extract_header(crlf, "a.py").fields["status"], "draft")
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+# ======== 노트 ========
+# 1 하이픈 파일명은 importlib로 로드
+#   설명: source-header.py는 이름에 하이픈이 있어 import 문으로 못 불러온다. 파일 경로로 모듈을 만들어
+#   sys.modules에 등록한 뒤 실행하므로, 테스트는 도구를 설치 없이 소스 그대로 검사한다.
+#   관련: source-header.py
+# 2 CLI는 subprocess로
+#   설명: git이 필요한 테스트는 같은 인터프리터로 CLI를 별도 프로세스에서 돌린다. 종료 코드와 출력이
+#   실제 훅이 보는 값과 같아야 하기 때문이다. capture_output으로 출력을 모아 단언한다.
+#   관련: TASK-2
+# 3 lint --strict가 조용해야 한다
+#   설명: 종료 코드 0뿐 아니라 stdout·stderr가 비어 있어야 통과다. 경고가 남아도 0일 수 있으므로
+#   출력 없음까지 확인해 이 저장소가 자기 규격을 완전히 지킨다고 못 박는다.
+#   관련: .source-header.json, TASK-6
