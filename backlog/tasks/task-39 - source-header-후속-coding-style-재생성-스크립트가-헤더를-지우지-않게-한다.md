@@ -1,10 +1,10 @@
 ---
 id: TASK-39
 title: 'source-header 후속: coding-style 재생성 스크립트가 헤더를 지우지 않게 한다'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-12T11:37:00Z'
-updated_date: '2026-11-12T11:37:00Z'
+updated_date: '2026-11-12T11:50:00Z'
 labels:
   - source-header
   - followup
