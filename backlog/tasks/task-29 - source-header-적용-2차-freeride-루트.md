@@ -1,10 +1,10 @@
 ---
 id: TASK-29
 title: 'source-header 적용 2차: freeride 루트'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T07:34:00Z'
+updated_date: '2026-11-12T10:38:00Z'
 labels:
   - source-header
   - rollout
