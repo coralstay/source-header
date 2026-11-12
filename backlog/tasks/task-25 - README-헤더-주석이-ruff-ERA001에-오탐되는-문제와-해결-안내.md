@@ -4,7 +4,7 @@ title: 'README: 헤더 주석이 ruff ERA001에 오탐되는 문제와 해결 �
 status: In Progress
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-12T01:37:00Z'
+updated_date: '2026-11-12T01:38:00Z'
 labels:
   - source-header
   - followup
@@ -29,8 +29,8 @@ source-header README에 '린터와의 충돌' 절을 추가한다: ERA001 오탐
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 README에 '린터와의 충돌' 절이 있다: ruff ERA001이 프론트매터·하단 노트를 주석 처리된 코드로 오탐하는 원인과 해결 설정 예(pyproject의 per-file-ignores)를 담는다
-- [ ] #2 README의 예시 설정 블록이 유효한 TOML이며 ERA001을 per-file-ignores에 담는다(파싱으로 검증)
-- [ ] #3 README에 '표식은 소스 파일에만 달고 테스트 파일은 헤더만 둔다'는 방침이 한 줄로 적혀 있다
+- [x] #2 README의 예시 설정 블록이 유효한 TOML이며 ERA001을 per-file-ignores에 담는다(파싱으로 검증)
+- [x] #3 README에 '표식은 소스 파일에만 달고 테스트 파일은 헤더만 둔다'는 방침이 한 줄로 적혀 있다
 <!-- AC:END -->
 
 ## Definition of Done
