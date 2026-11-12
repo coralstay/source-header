@@ -1,10 +1,10 @@
 ---
 id: TASK-28
 title: '저장소별 .githooks 설치: source-header 플러그인으로 헤더 없는 커밋 차단 (파일럿 후 확대)'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-06T12:11:00Z'
-updated_date: '2026-11-12T02:57:00Z'
+updated_date: '2026-11-12T03:18:00Z'
 labels:
   - source-header
   - rollout
