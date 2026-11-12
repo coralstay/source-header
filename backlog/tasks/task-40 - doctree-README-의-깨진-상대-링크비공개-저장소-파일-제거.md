@@ -1,10 +1,10 @@
 ---
 id: TASK-40
 title: 'doctree: README 의 깨진 상대 링크(비공개 저장소 파일) 제거'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-12T12:11:00Z'
-updated_date: '2026-11-12T12:12:00Z'
+updated_date: '2026-11-12T12:20:00Z'
 labels:
   - source-header
   - followup
