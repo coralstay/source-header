@@ -4,7 +4,7 @@ title: 'omnivim: PRACTICAL_VIM_MAP.md 를 공개하고 깨진 링크 6곳을 살
 status: In Progress
 assignee: []
 created_date: '2026-11-12T12:11:00Z'
-updated_date: '2026-11-12T12:20:00Z'
+updated_date: '2026-11-12T12:35:00Z'
 labels:
   - source-header
   - followup
@@ -39,7 +39,7 @@ all_tips.py, official_sources/, 공식 예제와 같은 실습 파일 공개. �
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 공개 전 점검: 파일에 책 페이지 번호가 없고(p.NN·쪽·page 검색 0건) 영어 문장은 팁 제목뿐임을 grep 출력으로 보인다. 본문 줄 수·크기를 기록한다
-- [ ] #2 PRACTICAL_VIM_MAP.md 에 source-header 헤더(license AGPL-3.0-only, 한 줄 description)를 붙여 추적한다. 헤더를 뺀 본문은 로컬 파일과 바이트 동일하다
+- [ ] #2 PRACTICAL_VIM_MAP.md 에 source-header 헤더(license AGPL-3.0-only, 한 줄 description)를 붙여 추적한다. 헤더를 뺀 본문은 로컬 파일과 바이트 동일하되, 유저 지시(2026-11-12)로 근거 없는 홍보성 문구 1줄(특정 기업 표준 준수 문장)과 그 앞줄 끝 공백만 제외한다
 - [ ] #3 .gitignore 와 .source-header.json 에서 이 파일 항목만 제거한다. git check-ignore 로 all_tips.py·official_sources/ 등은 여전히 무시됨을 보인다
 - [ ] #4 README 210행 문구에서 이 파일만 뺀다(나머지 비공개 항목 문구 불변). 변경은 그 줄뿐이다
 - [ ] #5 omnivim 의 모든 .md 상대 링크 전수 검사(URL 디코딩 포함)에서 깨진 링크가 0이다(변경 전 6건). source-header lint --strict . 오류 0, scripts/audit_all.py 의 문서 검사 항목이 통과한다
