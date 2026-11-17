@@ -1,10 +1,10 @@
 ---
 id: TASK-39
 title: 'source-header 후속: coding-style 재생성 스크립트가 헤더를 지우지 않게 한다'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-12T11:37:00Z'
-updated_date: '2026-11-12T11:50:00Z'
+updated_date: '2026-11-17T12:41:00Z'
 labels:
   - source-header
   - followup
@@ -35,18 +35,18 @@ snippets.py 는 현재 tips/snippets_registry.json 형식(dict)과 맞지 않아
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 도우미 keep_header(path, new_text) 를 추가한다(테스트 먼저): 기존 파일에 source-header 헤더가 있으면 새 내용 앞에 그대로 붙이고, 없으면 만들지 않는다. 헤더 보존은 두 번 돌려도 결과가 같다(멱등)
-- [ ] #2 카드 본문 '고칠 쓰기 지점'의 모든 파일 쓰기에 도우미를 적용한다. 헤더를 뺀 생성 내용은 변경 전과 바이트 동일하다
-- [ ] #3 헤더가 있는 파일을 가진 임시 복사본에서 각 스크립트를 실제로 돌려 헤더가 유지됨을 보인다(실제 저장소 파일은 덮어쓰지 않는다). 돌릴 수 없는 스크립트는 이유와 함께 단위 테스트로 대체한다
-- [ ] #4 source-header lint --strict . 오류 0 이고 기존 테스트·검증 스크립트가 변경 전과 같은 결과다(이 환경에서 못 돌리는 것은 이유 기록)
+- [x] #1 도우미 keep_header(path, new_text) 를 추가한다(테스트 먼저): 기존 파일에 source-header 헤더가 있으면 새 내용 앞에 그대로 붙이고, 없으면 만들지 않는다. 헤더 보존은 두 번 돌려도 결과가 같다(멱등)
+- [x] #2 카드 본문 '고칠 쓰기 지점'의 모든 파일 쓰기에 도우미를 적용한다. 헤더를 뺀 생성 내용은 변경 전과 바이트 동일하다
+- [x] #3 헤더가 있는 파일을 가진 임시 복사본에서 각 스크립트를 실제로 돌려 헤더가 유지됨을 보인다(실제 저장소 파일은 덮어쓰지 않는다). 돌릴 수 없는 스크립트는 이유와 함께 단위 테스트로 대체한다
+- [x] #4 source-header lint --strict . 오류 0 이고 기존 테스트·검증 스크립트가 변경 전과 같은 결과다(이 환경에서 못 돌리는 것은 이유 기록)
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 테스트 먼저 작성: 변경 전 실패, 변경 후 통과 출력을 Implementation Notes 에 첨부했다
-- [ ] #2 source-header lint --strict . 종료 코드 0 출력을 Implementation Notes 에 첨부했다
-- [ ] #3 임시 복사본 재생성 증거(헤더 유지, 두 번째 실행 변경 0)를 첨부했다
-- [ ] #4 에이전트 보고를 믿지 않고 같은 검증을 직접 다시 돌렸다
+- [x] #1 테스트 먼저 작성: 변경 전 실패, 변경 후 통과 출력을 Implementation Notes 에 첨부했다
+- [x] #2 source-header lint --strict . 종료 코드 0 출력을 Implementation Notes 에 첨부했다
+- [x] #3 임시 복사본 재생성 증거(헤더 유지, 두 번째 실행 변경 0)를 첨부했다
+- [x] #4 에이전트 보고를 믿지 않고 같은 검증을 직접 다시 돌렸다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -68,3 +68,21 @@ snippets.py 는 현재 tips/snippets_registry.json 형식(dict)과 맞지 않아
 4. 임시 복사본 재생성, lint, 기존 검증을 돌린다.
 5. 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-17 병합 후 재검증(main 기준, 에이전트 보고가 아니라 직접 다시 돌린 결과)
+- PR: #3(04fba40..8ce2888). 쓰기 지점: generate_missing_content_katas.py main·test, generate_all_contents.py main·test, snippets.py snippets.md·posts 에 keep_header 적용. 색인 md·README 는 헤더 제외 대상이라 그대로 덮어씀(노트에 기록)
+- 테스트 먼저: 새 test_header_keep.py 를 변경 전 코드에 돌리면 14 failed, 변경 후 14 passed / 18 subtests passed(세 스크립트를 가짜 데이터로 실제 실행하는 테스트 포함)
+- 라이선스·작성자: LICENSE 는 AGPL-3.0 본문, 추적 파일 헤더의 license 는 전부 AGPL-3.0-only, .mailmap 커밋됨
+- lint: 깨끗한 main 클론에서 `source-header lint --strict .` rc=0 (로컬 작업 폴더의 오류는 추적되지 않는 로컬 파일뿐)
+- 임시 복사본 재생성: generate_all_contents.py --force rc=0, 헤더 있는 1,227개 모두 유지·변경 0. generate_missing_content_katas.py 는 contents_data 모듈이 저장소에 없어 실행 불가, snippets.py --export 는 변경 전에도 TypeError(원래 상태) — 둘 다 단위 테스트로 대체
+- 기존 테스트: scripts/test_*.py 25 passed
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+coding-style 재생성 스크립트 3개가 keep_header 로 헤더를 보존한다. 테스트 먼저(14 failed → 14 passed), 실행 가능한 스크립트는 임시 복사본에서 헤더 1,227개 유지 확인, 나머지는 단위 테스트로 대체. (PR coralstay/coding-style-refactoring-principles#3)
+<!-- SECTION:FINAL_SUMMARY:END -->

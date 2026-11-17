@@ -1,10 +1,10 @@
 ---
 id: TASK-32
 title: 'source-header 적용 2차: devOps-LifeCycle'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T10:38:00Z'
+updated_date: '2026-11-17T12:41:00Z'
 labels:
   - source-header
   - rollout
@@ -32,19 +32,19 @@ dependencies: []
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
-- [ ] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
-- [ ] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
-- [ ] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
-- [ ] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
+- [x] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
+- [x] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
+- [x] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
+- [x] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
+- [x] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
-- [ ] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
-- [ ] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
-- [ ] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
+- [x] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
+- [x] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
+- [x] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
+- [x] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -66,3 +66,22 @@ dependencies: []
 4. 검증: lint --strict, 코드 무변경 증명, 기존 테스트·빌드, 표식 번호 연속·1:1 (AC #4).
 5. 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-17 병합 후 재검증(main 기준, 에이전트 보고가 아니라 직접 다시 돌린 결과)
+- PR: #1(fe69fd2..22e359b)
+- 라이선스·작성자: LICENSE 는 AGPL-3.0 본문, 추적 파일 헤더의 license 는 전부 AGPL-3.0-only, .mailmap 커밋됨
+- lint: 깨끗한 main 클론에서 `source-header lint --strict .` rc=0 (로컬 작업 폴더의 오류는 추적되지 않는 로컬 파일뿐)
+- 코드 무변경(M 91개): md 본문 바이트 동일 72, py ast 동일 4, sh shfmt -mn 동일 6, 기타 주석 외 줄 동일 9
+- 표식: 5개 파일 15개, 번호 연속·노트 1:1 위반 0
+- 테스트: py 5 py_compile, sh 6 bash -n, yaml 8 yq 파싱 통과. Terraform(.tf)은 도구 미지원이라 대상 아님
+- description 표본 20개 검토: Lesson-and-learn.md 는 '아직 내용 없음'을 밝힌 정해진 문장, 스크립트·설정은 개별 서술
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+devOps-LifeCycle 소스·설정 19개와 md 72개에 헤더, scripts 에 표식 15개를 달았다. 병합 후 lint 0, 코드 무변경 재확인. (PR coralstay/devOps-LifeCycle#1)
+<!-- SECTION:FINAL_SUMMARY:END -->

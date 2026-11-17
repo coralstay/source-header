@@ -1,10 +1,10 @@
 ---
 id: TASK-33
 title: 'source-header 적용 2차: databases'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T10:38:00Z'
+updated_date: '2026-11-17T12:41:00Z'
 labels:
   - source-header
   - rollout
@@ -32,19 +32,19 @@ dependencies: []
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
-- [ ] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
-- [ ] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
-- [ ] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
-- [ ] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
+- [x] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
+- [x] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
+- [x] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
+- [x] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
+- [x] #5 규격(source-header README '본문 노트 표식')에 따라 손으로 쓴 핵심 소스의 중요한 지점 줄 끝에 '---- N' 표식을 달고 하단에 노트를 쓴다(번호 연속·표식:노트 1:1). 생성 파일·테스트·마크다운은 헤더만 둔다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
-- [ ] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
-- [ ] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
-- [ ] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
+- [x] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
+- [x] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
+- [x] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
+- [x] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -66,3 +66,22 @@ practice의 테스트·기타 파일(108)은 생성물이라 경로 기반으로
 4. 검증: lint --strict, 코드 무변경 증명, 기존 테스트·빌드, 표식 번호 연속·1:1 (AC #4).
 5. 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-17 병합 후 재검증(main 기준, 에이전트 보고가 아니라 직접 다시 돌린 결과)
+- PR: #1(68c2889..224a95c)
+- 라이선스·작성자: LICENSE 는 AGPL-3.0 본문, 추적 파일 헤더의 license 는 전부 AGPL-3.0-only, .mailmap 커밋됨
+- lint: 깨끗한 main 클론에서 `source-header lint --strict .` rc=0 (로컬 작업 폴더의 오류는 추적되지 않는 로컬 파일뿐)
+- 코드 무변경(M 205개): md 본문 바이트 동일 62, 주석 외 줄 동일 111(sql·js·yaml), py ast 동일 24, sh shfmt -mn 동일 8
+- 표식: 4개 파일 23개, 번호 연속·노트 1:1 위반 0
+- 테스트: py 26 py_compile, sh 8 bash -n, yaml 2 파싱 통과. practice 정답 검증(scripts/test.sh)은 DB 컨테이너가 필요해 건너뜀(코드 무변경은 위 비교로 증명)
+- description 표본 20개 검토: practice 생성 파일은 '책·장·절 + 파일 역할(생성 파일)' 정해진 문장, scripts 는 개별 서술
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+databases practice 생성 파일 162개와 scripts·문서 43개에 헤더, 핵심 4개에 표식 23개를 달았다. 병합 후 lint 0, 코드 무변경 재확인(DB 컨테이너가 필요한 practice 정답 검증은 건너뜀). (PR coralstay/databases#1)
+<!-- SECTION:FINAL_SUMMARY:END -->

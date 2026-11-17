@@ -1,10 +1,10 @@
 ---
 id: TASK-29
 title: 'source-header 적용 2차: freeride 루트'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T10:38:00Z'
+updated_date: '2026-11-17T12:41:00Z'
 labels:
   - source-header
   - rollout
@@ -31,18 +31,18 @@ dependencies: []
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
-- [ ] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
-- [ ] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
-- [ ] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
+- [x] #1 .mailmap(전역 ~/.mailmap과 같은 매핑)을 저장소에 커밋해 다른 클론·CI에서도 authors가 coralstay로 나온다
+- [x] #2 라이선스를 확인한다: LICENSE가 AGPL-3.0 표준 본문이고 헤더 license는 AGPL-3.0-only다
+- [x] #3 .source-header.json(제외: README.md, practice/**/main.*, .skeleton/**, backlog/** 등)을 확정하고 source-header init으로 헤더를 넣고, 파일마다 한 줄 description을 쓴다. source-header lint --strict 오류 0
+- [x] #4 코드가 바뀌지 않았다: 변경 파일마다 py는 ast.dump 동일, sh는 bash -n·shfmt -mn 구조 동일, c·cpp는 오브젝트 동일, md는 헤더를 뺀 본문이 바이트 동일이다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
-- [ ] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
-- [ ] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
-- [ ] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
+- [x] #1 source-header lint --strict . 오류 0 (출력을 Implementation Notes에 첨부)
+- [x] #2 저장소의 기존 테스트·빌드가 통과한다(이 환경에서 못 돌리는 것은 건너뛴 이유와 함께 기록)
+- [x] #3 description을 무작위 20개 이상 표본 검토했다(생성 문장은 규칙을 검토)
+- [x] #4 표식 번호 연속·1:1 확인 출력과 코드 무변경 증명 결과를 Implementation Notes에 첨부했다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -64,3 +64,22 @@ yaml 하나라 표식은 달 곳이 없다(헤더만). 이 카드로 2차 라운
 4. 검증: lint --strict, 코드 무변경 증명, 기존 테스트·빌드, 표식 번호 연속·1:1 (AC #4).
 5. 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-17 병합 후 재검증(main 기준, 에이전트 보고가 아니라 직접 다시 돌린 결과)
+- PR: coralstay/freeride#1 병합(a050b9f)
+- lint: 깨끗한 main 클론에서 `source-header lint --strict .` rc=0 (로컬 작업 폴더의 오류는 추적되지 않는 로컬 파일뿐)
+- 코드 무변경: 변경 파일 M 1개(layout.yaml) 주석 외 줄 동일, 추가 2개(.mailmap, .source-header.json)
+- 표식: 대상 없음(설정 파일 1개, 헤더만)
+- 빌드·테스트: 저장소 루트는 layout.yaml 하나뿐 — yq 파싱 통과
+- description 표본: 1개 전수 검토(layout.yaml: 레이아웃 명세 — 적절)
+- 라이선스: LICENSE AGPL-3.0, 헤더 license AGPL-3.0-only
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+freeride 루트 layout.yaml 에 헤더와 인프라(.mailmap, .source-header.json)를 달았다. 병합 후 lint 0, 코드 무변경 재확인. (PR coralstay/freeride#1 (01ed502..a050b9f))
+<!-- SECTION:FINAL_SUMMARY:END -->

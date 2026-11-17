@@ -1,10 +1,10 @@
 ---
 id: TASK-40
 title: 'doctree: README 의 깨진 상대 링크(비공개 저장소 파일) 제거'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-12T12:11:00Z'
-updated_date: '2026-11-12T12:20:00Z'
+updated_date: '2026-11-17T12:41:00Z'
 labels:
   - source-header
   - followup
@@ -27,16 +27,16 @@ README.md 427행에서 링크만 제거하고 문장은 유지한다: '본 저�
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 README.md 427행에서 상대 링크만 제거하고 문장은 유지한다. 변경은 그 한 줄뿐이다(git diff 로 확인)
-- [ ] #2 doctree 의 모든 .md 에 대해 상대 링크 전수 검사 결과 깨진 링크가 0이다(검사 스크립트 출력 첨부)
-- [ ] #3 source-header lint --strict . 오류 0 이다
+- [x] #1 README.md 427행에서 상대 링크만 제거하고 문장은 유지한다. 변경은 그 한 줄뿐이다(git diff 로 확인)
+- [x] #2 doctree 의 모든 .md 에 대해 상대 링크 전수 검사 결과 깨진 링크가 0이다(검사 스크립트 출력 첨부)
+- [x] #3 source-header lint --strict . 오류 0 이다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 변경 전 깨진 링크 1건, 변경 후 0건 출력을 Implementation Notes 에 첨부했다
-- [ ] #2 diff 가 427행 한 줄임을 확인하는 출력을 첨부했다
-- [ ] #3 PR 에 병합 전 확인 사항(다른 저장소 파일을 만들지 않음)을 적었다
+- [x] #1 변경 전 깨진 링크 1건, 변경 후 0건 출력을 Implementation Notes 에 첨부했다
+- [x] #2 diff 가 427행 한 줄임을 확인하는 출력을 첨부했다
+- [x] #3 PR 에 병합 전 확인 사항(다른 저장소 파일을 만들지 않음)을 적었다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -57,3 +57,20 @@ README.md 427행 한 곳. 링크 대상 contents-overview-tocs.md 는 어느 저
 3. 링크 전수 검사와 lint, diff 로 검증한다.
 4. 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-17 병합 후 재검증(main 기준, 에이전트 보고가 아니라 직접 다시 돌린 결과)
+- PR: #2(c547650..02c3738) 병합
+- diff: README.md 한 줄(1 insertion, 1 deletion). 링크와 그 링크를 가리키던 '본 저장소(...)의' 부분만 빠지고 문장은 유지
+- 상대 링크 전수 검사: 변경 전 61개 중 깨짐 1(README.md → ../coding-style-refactoring-principles/contents-overview-tocs.md), 변경 후 60개 중 0
+- lint --strict rc=0
+- PR 본문에 다른 저장소 파일을 만들지 않고 링크만 뺐다는 확인 사항 기재됨
+<!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+doctree README 의 비공개 저장소 링크 1건을 한 줄 변경으로 제거했다. 깨진 상대 링크 1 → 0, lint 0. (PR coralstay/doctree#2)
+<!-- SECTION:FINAL_SUMMARY:END -->
