@@ -201,7 +201,7 @@ def extract_header(text: str, path) -> Header | None:
     for j in range(i + 1, len(lines)):
         inner = _unprefix(lines[j], prefix)
         if inner is None:
-            return None
+            return None  # ---- 1
         if inner.strip() == "---":
             block = "\n".join(["---", *(t for _, t in body), "---"])
             key_lines = {}
@@ -209,7 +209,7 @@ def extract_header(text: str, path) -> Header | None:
                 m = KEY_RE.match(t)
                 if m and m.group(1) not in key_lines:
                     key_lines[m.group(1)] = lineno
-            return Header(parse_frontmatter(block), i + 1, j + 1, prefix, key_lines)
+            return Header(parse_frontmatter(block), i + 1, j + 1, prefix, key_lines)  # ---- 2
         body.append((j + 1, strip_yaml_comment(inner)))
     return None
 
@@ -581,7 +581,7 @@ def rule_license(fields, ctx):
         if m and m.group(1) != lic:
             out.append(Finding(ctx.path, lineno, "error", "L1",
                                f"{SPDX_KEY} '{m.group(1)}' differs from license '{lic}'"))
-    if ctx.default_license and not (spdx_ids(ctx.default_license) & spdx_ids(lic)):
+    if ctx.default_license and not (spdx_ids(ctx.default_license) & spdx_ids(lic)):  # ---- 3
         out.append(_finding(ctx, "license", "warning", "L2",
                             f"license '{lic}' differs from repository LICENSE ({ctx.default_license})"))
     return out
@@ -604,7 +604,7 @@ def rule_fresh(fields, ctx):
     """B8 (--staged만) 본문이 HEAD와 다른데 updated_date가 오늘이 아님. fix --staged를 건너뛴 커밋을 막는다."""
     if not ctx.staged:
         return []
-    if ctx.head_text is not None and body_of(ctx.head_text, ctx.path) == body_of(ctx.text, ctx.path):
+    if ctx.head_text is not None and body_of(ctx.head_text, ctx.path) == body_of(ctx.text, ctx.path):  # ---- 4
         return []
     updated = fields.get("updated_date")
     if not isinstance(updated, str) or parse_date(updated) is None or updated[:10] == today():
@@ -614,7 +614,7 @@ def rule_fresh(fields, ctx):
 
 
 RULES = [rule_required, rule_unknown, rule_types, rule_status, rule_dates, rule_lifecycle,
-         rule_date_order, rule_license, rule_upstream, rule_fresh]
+         rule_date_order, rule_license, rule_upstream, rule_fresh]  # ---- 5
 
 
 def lint_text(text: str, path: str, ctx: LintContext) -> list[Finding]:
@@ -627,7 +627,7 @@ def lint_text(text: str, path: str, ctx: LintContext) -> list[Finding]:
         opened = i < len(lines) and (_unprefix(lines[i], prefix) or "").strip() == "---"
         if opened:
             return [Finding(path, i + 1, "error", "H002", "header block is not closed")]
-        return [Finding(path, 1, "error", "H001", "source header is missing")]
+        return [Finding(path, 1, "error", "H001", "source header is missing")]  # ---- 6
     ctx.header = header
     ctx.text = text
     out = []
@@ -648,7 +648,7 @@ def repo_root(cwd: Path) -> Path:
 def git(args: list[str], cwd: Path) -> str | None:
     """git 명령 출력. 실패(저장소 아님, 파일 없음 등)하면 None."""
     try:
-        res = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, check=False)
+        res = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True, check=False)  # ---- 7
     except FileNotFoundError:
         return None
     return res.stdout if res.returncode == 0 else None
@@ -702,7 +702,7 @@ class Workspace:
         if path.is_file():
             config = json.loads(path.read_text(encoding="utf-8"))
         # 설정 파일의 키는 기본값을 대체한다. .git은 언제나 제외한다.
-        include = [glob_re(g) for g in config.get("include", DEFAULT_INCLUDE)]
+        include = [glob_re(g) for g in config.get("include", DEFAULT_INCLUDE)]  # ---- 8
         exclude = [glob_re(g) for g in [*config.get("exclude", DEFAULT_EXCLUDE), ".git/**",
                                         "**/.git/**"]]
         return cls(cwd, root, include, exclude)
@@ -865,7 +865,7 @@ def git_user(root: Path) -> str | None:
     email = (git(["config", "user.email"], root) or "").strip()
     if name and email:
         # 출력은 "이름 <이메일>"이다. 매핑이 없으면 입력이 그대로 돌아온다.
-        out = (git(["check-mailmap", f"{name} <{email}>"], root) or "").strip()
+        out = (git(["check-mailmap", f"{name} <{email}>"], root) or "").strip()  # ---- 9
         mapped = out.rsplit(" <", 1)[0].strip() if " <" in out else ""
         name = mapped or name
     return name or None
@@ -879,7 +879,7 @@ def git_authors(root: Path, rel: str) -> list[str]:
     한 사람으로 나온다. .mailmap을 직접 파싱하지 않는 이유: git이 저장소 .mailmap뿐
     아니라 mailmap.file·mailmap.blob 설정까지 같은 규칙으로 해석해 주기 때문이다."""
     # --follow와 --reverse를 같이 쓰면 git이 이름 바뀌기 전 기록을 놓치므로 뒤집기는 여기서 한다.
-    out = git(["log", "--follow", "--use-mailmap", "--format=%aN", "--", rel], root) or ""
+    out = git(["log", "--follow", "--use-mailmap", "--format=%aN", "--", rel], root) or ""  # ---- 10
     names: list[str] = []
     for name in reversed(out.splitlines()):
         if name.strip() and name not in names:
@@ -902,7 +902,7 @@ def derive_fields(ws: Workspace, rel: str, license_: str | None) -> dict:
         "license": license_ or repo_license(ws.root) or "NOASSERTION",
         "status": "draft",
         "created_date": created,
-        "updated_date": max(created, updated),
+        "updated_date": max(created, updated),  # ---- 11
     }
 
 
@@ -920,7 +920,7 @@ def cmd_init(args) -> int:
     ws = Workspace.load()
     for t in walk_targets(args.paths or ["."], ws):
         if extract_header(t.text, t.rel) is not None:
-            continue
+            continue  # ---- 12
         fields = derive_fields(ws, t.rel, args.license)
         (ws.root / t.rel).write_text(insert_header(t.text, t.rel, fields), encoding="utf-8")
         print(f"{t.display}: header added")
@@ -936,7 +936,7 @@ def body_of(text: str, path) -> str:
     if header is None:
         return text
     lines = text.split("\n")
-    return "\n".join(lines[:header.start - 1] + lines[header.end:])
+    return "\n".join(lines[:header.start - 1] + lines[header.end:])  # ---- 13
 
 
 def set_field(text: str, path, key: str, value) -> str:
@@ -949,7 +949,7 @@ def set_field(text: str, path, key: str, value) -> str:
     if key in header.lines:
         i = header.lines[key] - 1
         inner = _unprefix(lines[i], header.prefix) or ""
-        comment = inner[len(strip_yaml_comment(inner)):]
+        comment = inner[len(strip_yaml_comment(inner)):]  # ---- 14
         lines[i] = (f"{header.prefix} " if header.prefix else "") + rendered + comment
     else:
         lines.insert(header.end - 1, (f"{header.prefix} " if header.prefix else "") + rendered)
@@ -976,11 +976,11 @@ def cmd_fix(args) -> int:
     for rel in staged_paths(ws):
         if not ws.selected(rel):
             continue
-        staged = git(["show", f":{rel}"], ws.root)
+        staged = git(["show", f":{rel}"], ws.root)  # ---- 15
         header = extract_header(staged or "", rel)
         if header is None:
             continue  # 헤더가 없는 파일은 lint가 H001로 잡는다
-        if git(["diff", "--name-only", "--", rel], ws.root):
+        if git(["diff", "--name-only", "--", rel], ws.root):  # ---- 16
             print(Finding(ws.display(rel), 1, "error", "B9",
                           "partially staged; stage or stash the rest, then run fix again").format())
             status = 1
@@ -1064,11 +1064,11 @@ def cmd_hook(args) -> int:
     - B1: fix가 실패하면 lint를 돌리지 않고 그 코드로 끝낸다. fix가 손대지 못한(부분 staged)
       상태에서 lint까지 돌면 같은 파일을 두 번 보고해 원인이 흐려진다."""
     root = repo_root(Path.cwd().resolve())
-    if not (root / CONFIG_NAME).is_file():
+    if not (root / CONFIG_NAME).is_file():  # ---- 17
         return 0
     staged = argparse.Namespace(staged=True, since=None, paths=[], strict=False)
     code = cmd_fix(staged)
-    if code != 0:
+    if code != 0:  # ---- 18
         return code
     return cmd_lint(staged)
 
@@ -1114,4 +1114,87 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main())  # ---- 19
+
+
+# ======== 노트 ========
+# 1 헤더는 접두사 줄이 이어지는 동안만
+#   설명: 여는 `---` 뒤에서 접두사가 없는 줄을 만나면 닫히지 않은 것으로 보고 None을 돌려준다.
+#   본문 코드를 헤더 필드로 잘못 읽지 않으려는 안전장치다. lint는 이 경우를 H002로 보고한다.
+#   관련: README.md '헤더 형식', 규칙 H002
+#   개념: 불변식
+# 2 필드 해석은 agile-hooks와 같은 파서
+#   설명: 접두사와 YAML 주석을 벗긴 텍스트를 parse_frontmatter에 넘긴다. Backlog.md 카드를
+#   읽는 훅과 같은 동작을 공유하려고 새 YAML 파서를 만들지 않는다.
+#   관련: scripts/work_order.py(claude-code-agile-hooks), TASK-1
+#   개념: SSOT
+# 3 L2는 계열이 겹칠 때만 통과
+#   설명: 저장소 LICENSE의 SPDX id 집합과 헤더 license의 id 집합이 하나도 겹치지 않으면 경고한다.
+#   OR 식(MIT OR Apache-2.0)도 id 단위로 비교하므로 한쪽만 맞아도 통과다.
+#   관련: README.md 라이선스 절, TASK-2
+# 4 B8은 본문이 바뀐 경우에만
+#   설명: HEAD와 본문이 같으면 updated_date를 검사하지 않는다. 헤더만 고친 커밋이나 이름 변경 커밋이
+#   날짜 때문에 막히지 않게 하고, 본문이 바뀌었을 때만 fix --staged를 건너뛴 것을 잡는다.
+#   관련: body_of, cmd_fix
+# 5 규칙 목록이 확장점
+#   설명: 규칙은 (fields, ctx) -> [Finding] 함수이고 이 리스트 순서대로 실행된다. 새 규칙은 함수를
+#   만들어 여기에 덧붙이면 되며, lint_text 본문은 건드리지 않는다.
+#   개념: 규칙 목록
+# 6 헤더가 없으면 규칙을 돌리지 않는다
+#   설명: H001 하나만 보고하고 끝낸다. 헤더가 없으면 필드 규칙이 전부 필수 누락으로 쏟아져 원인이
+#   흐려지기 때문이다.
+#   관련: 규칙 H001
+# 7 git 호출의 단일 관문
+#   설명: 모든 git 조회가 이 함수를 지난다. git이 없거나(FileNotFoundError) 명령이 실패하면 None으로
+#   바꿔, 호출한 쪽이 저장소가 아닌 경우를 같은 방식으로 다룬다.
+#   관련: repo_root, git_created_date
+#   개념: 외부 연동
+# 8 설정 키는 기본값을 대체한다
+#   설명: .source-header.json의 include·exclude는 기본값에 더해지지 않고 바꿔 끼운다. exclude를
+#   쓰면 DEFAULT_EXCLUDE(node_modules 등)도 함께 사라지므로 필요한 것은 설정에 다시 적는다.
+#   관련: .source-header.json, README.md 설정
+# 9 mailmap을 거친 사용자 이름
+#   설명: git config의 옛 이름을 git check-mailmap에 물어 정규 이름으로 바꾼다. 옛 이름으로 설정된
+#   기계에서 새 파일을 만들어도 커밋된 파일과 같은 이름이 나온다.
+#   관련: .mailmap, TASK-3, TASK-6
+#   개념: mailmap
+# 10 authors는 %aN과 --use-mailmap
+#   설명: .mailmap을 직접 파싱하지 않고 git에 맡긴다. 저장소 .mailmap과 mailmap.file 설정을 git이
+#   같은 규칙으로 해석하기 때문이다. 이름이 바뀐 파일은 --follow로 따라간다.
+#   관련: .mailmap, TASK-3
+# 11 updated_date가 created_date보다 앞서지 않게
+#   설명: git 이력이 어긋나(--follow 실패 등) 마지막 수정일이 생성일보다 앞서도 max로 맞춘다.
+#   그래야 init이 만든 헤더가 곧바로 날짜 순서 규칙을 어기지 않는다.
+#   관련: rule_date_order
+# 12 init은 멱등
+#   설명: 헤더가 이미 있는 파일은 건드리지 않는다. 몇 번을 돌려도 같은 결과이고, 사람이 채운
+#   description을 덮어쓰지 않는다.
+#   개념: 멱등
+# 13 body_of는 헤더를 뺀 나머지
+#   설명: updated_date 갱신 여부를 헤더가 아니라 본문의 변화로 판단하기 위한 기준이다. 헤더가 없으면
+#   전체가 본문이다.
+#   관련: rule_fresh, cmd_fix
+# 14 줄 끝 설명 주석 보존
+#   설명: 필드 한 줄만 바꾸고 원래 줄 뒤에 붙은 YAML 설명 주석을 그대로 이어 붙인다. 템플릿의
+#   `# 필수 · date` 같은 안내가 fix 뒤에도 남는다.
+#   관련: templates/
+# 15 인덱스를 읽는다
+#   설명: 작업 트리가 아니라 git show :path로 stage된 내용을 읽는다. 커밋되는 것은 인덱스이므로
+#   작업 트리를 보면 틀린 내용이 커밋될 수 있다.
+#   관련: cmd_lint --staged
+#   개념: 인덱스
+# 16 B9 일부만 staged면 고치지 않는다
+#   설명: 작업 트리와 인덱스가 다르면 고쳐서 다시 git add할 때 stage하지 않은 변경이 커밋에 섞인다.
+#   오류로 멈추고 사람이 정리하게 한다.
+#   관련: 규칙 B9
+# 17 B2 opt-in
+#   설명: 저장소 루트에 .source-header.json이 없으면 훅이 아무것도 하지 않는다. 디스패처가 모든
+#   저장소에 같은 훅을 걸어도 헤더를 도입하지 않은 저장소의 커밋은 막지 않는다.
+#   관련: TASK-2
+# 18 B1 fix가 실패하면 lint를 돌리지 않는다
+#   설명: 부분 staged처럼 fix가 손대지 못한 상태에서 lint까지 돌면 같은 파일을 두 번 보고해 원인이
+#   흐려진다. fix의 종료 코드로 그대로 끝낸다.
+#   관련: cmd_fix, cmd_lint
+# 19 종료 코드가 곧 결과
+#   설명: 0이면 통과, 0이 아니면 오류다. pre-commit 훅이 이 값으로 커밋을 막는다.
+#   관련: cmd_hook
