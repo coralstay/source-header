@@ -1,10 +1,10 @@
 ---
 id: TASK-4
 title: 'source-header 적용: dev-tools/central-docs-collector'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-31T11:08:00Z'
-updated_date: '2026-11-06T13:03:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - rollout
@@ -86,10 +86,19 @@ LICENSE 없음 → AGPL-3.0 LICENSE 추가
 - DoD #2: python3 central-docs-collector.py --test 정상 종료(직접 실행). pytest 23 passed·23 subtests는 서브에이전트 보고. ruff check . 38개 오류는 변경 전과 같다(서브에이전트 보고, 직접 비교는 안 함).
 - DoD #3: 유저가 description 286개(8개 저장소) 중 무작위 20개를 샘플 검토하고 '그래도 모두 남겨'라고 결정했다. 템플릿형 설명(테스트 파일)이 있으나 그대로 둔다.
 - AC '.githooks 설치'는 유저 결정으로 후속 draft(source-header DRAFT-7, GF-149 이후)로 분리했다.
+
+## 2026-11-22 TASK-42(미병합 브랜치·오래된 카드 정리)에서 마감
+- 마감 방식: 다른 저장소에 헤더를 단 작업이라 source-header 의 테스트 표식(testFirst)으로 검증할 수 없다. 유저 결정(2026-11-22)으로 테스트 표식 대신 아래 증거로 닫는다. 코드 무변경·표식 1:1 은 PR 의 base..merge 범위를 다시 계산했다
+- 저장소: coralstay/central-docs-collector, 병합 PR #1 2026-11-12, 9155d9c63..72805ab54
+- 코드 무변경·표식: 변경 M 파일 ast 동일 2, 표식 2파일 18개 위반 0
+- lint: origin/main 72805ab lint --strict rc=0
+- 테스트·빌드: --test: Ran 23 tests OK(rc=0, origin/main 스냅숏)
+- 라이선스·작성자: LICENSE AGPL, .mailmap 있음
+- DoD #3: 유저가 description 286개 중 무작위 20개를 표본 검토하고 모두 유지하기로 결정(2026-11-11, DRAFT-13 기록)
 <!-- SECTION:NOTES:END -->
 
 ## Final Summary
 
 <!-- SECTION:FINAL_SUMMARY:BEGIN -->
-central-docs-collector에 source-header 헤더(프론트매터·AGPL-3.0-only·한 줄 description)와 본문 노트 표식(수집기 14·테스트 4)을 적용했다. 기존 배너의 사용법 가이드·흐름도는 [설계 메모]로 그대로 보존했다. 두 .py의 AST가 main과 같고 lint --strict 0 오류, --test 정상, 표식:노트 1:1 연속. LICENSE는 이미 AGPL이라 변경 없음. .githooks 설치는 GF-149 이후 후속 draft로 분리. 커밋 6c59600 58cc66e 16aee3b(저장소 central-docs-collector, 브랜치 task/TASK-4, 미push).
+coralstay/central-docs-collector 에 source-header 헤더와 본문 노트 표식을 적용했다(PR #1 2026-11-12 병합). 2026-11-22 에 코드 무변경·표식 1:1·lint 0·테스트를 다시 확인해 증거로 닫았다(테스트 표식 대신 증거, 유저 결정).
 <!-- SECTION:FINAL_SUMMARY:END -->
