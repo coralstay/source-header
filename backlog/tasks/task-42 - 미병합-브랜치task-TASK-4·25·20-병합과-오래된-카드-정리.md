@@ -1,10 +1,10 @@
 ---
 id: TASK-42
 title: 미병합 브랜치(task/TASK-4·25·20) 병합과 오래된 카드 정리
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-22T11:28:00Z'
-updated_date: '2026-11-22T12:00:00Z'
+updated_date: '2026-11-22T12:01:00Z'
 labels:
   - cleanup
   - backlog
@@ -36,16 +36,16 @@ documentation:
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 정리 브랜치(origin/main 기준)에 task/TASK-4·task/TASK-25·task/TASK-20 을 merge 로 합치고(rebase·squash 없음), work-order.md 충돌은 work-order 재생성으로 푼다. 사람 서명 커밋이 이력에 그대로 있다(B2)
-- [ ] #2 카드마다 분류표(실제로 끝남·이관·다른 담당·접은 일·남은 일)를 Notes 에 남기고, 끝난 카드는 병합 PR·커밋·지금 main 기준 lint 출력을 증거로 AC·DoD 체크·final summary·Done 처리한다. 증거가 애매한 카드는 유저에게 묻는다. TASK-28·DRAFT-14 는 그대로 둔다(B1·B3·B4)
-- [ ] #3 upkeep 으로 이관한 TASK-17~22 는 'upkeep TASK-n 으로 이관' 노트 후 archive 하고, 다른 담당 카드(TASK-35 Antigravity, TASK-14·36 다른 Claude 세션)는 노트로 담당을 적는다
-- [ ] #4 합친 뒤 pytest·source-header lint --strict 가 통과하고 backlog task list 가 정상이며, 기존 브랜치(로컬 3개·원격 task/TASK-4)는 병합 확인 뒤 지운다
+- [x] #1 정리 브랜치(origin/main 기준)에 task/TASK-4·task/TASK-25·task/TASK-20 을 merge 로 합치고(rebase·squash 없음), work-order.md 충돌은 work-order 재생성으로 푼다. 사람 서명 커밋이 이력에 그대로 있다(B2)
+- [x] #2 카드마다 분류표(실제로 끝남·이관·다른 담당·접은 일·남은 일)를 Notes 에 남기고, 끝난 카드는 병합 PR·커밋·지금 main 기준 lint 출력을 증거로 AC·DoD 체크·final summary·Done 처리한다. 증거가 애매한 카드는 유저에게 묻는다. TASK-28·DRAFT-14 는 그대로 둔다(B1·B3·B4)
+- [x] #3 upkeep 으로 이관한 TASK-17~22 는 'upkeep TASK-n 으로 이관' 노트 후 archive 하고, 다른 담당 카드(TASK-35 Antigravity, TASK-14·36 다른 Claude 세션)는 노트로 담당을 적는다
+- [x] #4 합친 뒤 pytest·source-header lint --strict 가 통과하고 backlog task list 가 정상이며, 기존 브랜치(로컬 3개·원격 task/TASK-4)는 병합 확인 뒤 지운다
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 분류표 전체와 카드별 증거를 Notes 에 첨부
-- [ ] #2 pytest·lint 출력 첨부
+- [x] #1 분류표 전체와 카드별 증거를 Notes 에 첨부
+- [x] #2 pytest·lint 출력 첨부
 - [ ] #3 PR 이 있다
 <!-- DOD:END -->
 
@@ -98,3 +98,9 @@ documentation:
 - 기존 브랜치 정리는 아래 커밋 뒤 로컬 task/TASK-4·25·20 삭제, 원격 task/TASK-4 는 PR 병합 뒤 삭제
 - PR: 소스 브랜치 task/TASK-42(번호는 생성 뒤 추가)
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+PR 로 올라가지 않은 채 남아 있던 브랜치 3개(task/TASK-4 89커밋·task/TASK-25 25커밋·task/TASK-20 6커밋)를 merge 로 한 정리 브랜치에 모아 사람 서명 커밋까지 이력을 보존했다. task/TASK-20 의 충돌 병합은 agile-hooks TASK-77 로 훅을 고친 뒤 마무리했다. 오래 In Progress 로 멈춘 카드를 분류해, 실제로 끝난 적용 카드 7장(TASK-4·5·6·12·13·15·24)과 TASK-25 를 병합 PR·코드 무변경·표식 1:1·lint·테스트 증거로 닫았고(테스트 표식 대신 증거 — 유저 결정), 이관·다른 담당·남은 일은 노트로 남겼으며 TASK-28·DRAFT-14 는 건드리지 않았다.
+<!-- SECTION:FINAL_SUMMARY:END -->
