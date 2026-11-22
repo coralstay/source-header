@@ -1,10 +1,10 @@
 ---
 id: TASK-6
 title: 'source-header 적용: dev-tools/source-header'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-31T11:08:00Z'
-updated_date: '2026-11-11T11:05:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - rollout
@@ -46,10 +46,10 @@ README·CHANGELOG는 제외하고 설계 문서는 포함, 기존 저장소의 .
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 source-header lint . 오류 0 (출력을 Implementation Notes에 첨부)
-- [ ] #2 저장소의 기존 테스트·빌드가 헤더 추가 후에도 통과
-- [ ] #3 유저가 description diff를 검토
-- [ ] #4 표식 번호가 파일마다 1부터 연속이고 표식:노트가 1:1임을 확인한 출력과, git diff에 주석·헤더 외 변경이 없음을 확인한 결과를 Implementation Notes에 첨부했다
+- [x] #1 source-header lint . 오류 0 (출력을 Implementation Notes에 첨부)
+- [x] #2 저장소의 기존 테스트·빌드가 헤더 추가 후에도 통과
+- [x] #3 유저가 description diff를 검토
+- [x] #4 표식 번호가 파일마다 1부터 연속이고 표식:노트가 1:1임을 확인한 출력과, git diff에 주석·헤더 외 변경이 없음을 확인한 결과를 Implementation Notes에 첨부했다
 <!-- DOD:END -->
 
 ## Implementation Plan
@@ -76,4 +76,19 @@ README·CHANGELOG는 제외하고 설계 문서는 포함, 기존 저장소의 .
 
 <!-- SECTION:NOTES:BEGIN -->
 2026-11-06 유저 결정: AC '.githooks 설치(--plugins source-header)'는 후속 draft(source-header DRAFT-7, GF-149 이후)로 분리했다. 이 카드의 AC 번호가 이에 맞춰 당겨졌다(표식 AC 번호 -1).
+
+## 2026-11-22 TASK-42(미병합 브랜치·오래된 카드 정리)에서 마감
+- 마감 방식: 다른 저장소에 헤더를 단 작업이라 source-header 의 테스트 표식(testFirst)으로 검증할 수 없다. 유저 결정(2026-11-22)으로 테스트 표식 대신 아래 증거로 닫는다. 코드 무변경·표식 1:1 은 PR 의 base..merge 범위를 다시 계산했다
+- 저장소: coralstay/source-header, 병합 PR #2 2026-11-12, a5a1b1a52..857693aaa
+- 코드 무변경·표식: source-header.py ast 동일, test_source_header.py 는 검증 테스트 4개 추가뿐(기존 76개 본문 동일), 표식 7파일 27개 위반 0
+- lint: origin/main 857693a lint --strict rc=0
+- 테스트·빌드: pytest 84 passed(작업 트리 task/TASK-42, 2026-11-22)
+- 라이선스·작성자: LICENSE AGPL, .mailmap 있음
+- DoD #3: 유저가 description 286개 중 무작위 20개를 표본 검토하고 모두 유지하기로 결정(2026-11-11, DRAFT-13 기록)
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+coralstay/source-header 에 source-header 헤더와 본문 노트 표식을 적용했다(PR #2 2026-11-12 병합). 2026-11-22 에 코드 무변경·표식 1:1·lint 0·테스트를 다시 확인해 증거로 닫았다(테스트 표식 대신 증거, 유저 결정).
+<!-- SECTION:FINAL_SUMMARY:END -->

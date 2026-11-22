@@ -4,7 +4,7 @@ title: 'agile-hooks: [수동 검증] 수용 기준은 테스트 표식 대신 No
 status: Draft
 assignee: []
 created_date: '2026-11-02T02:26:00Z'
-updated_date: '2026-11-02T02:26:00Z'
+updated_date: '2026-11-05T20:05:00Z'
 labels:
   - agile-hooks
   - workflow
@@ -39,3 +39,9 @@ claude-code-agile-hooks는 TASK-20에서 재초기화되므로, 이 카드는 �
 - [ ] #1 hooks/ 테스트 전체 통과
 - [ ] #2 source-header TASK-3·16·19로 실제 Done 전환을 확인
 <!-- DOD:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+대체(2026-11-06): claude-code-agile-hooks DRAFT-11(수동 검증 Done 게이트)로 흡수됐다.
+<!-- SECTION:NOTES:END -->
