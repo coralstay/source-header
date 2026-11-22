@@ -4,11 +4,13 @@ title: 미병합 브랜치(task/TASK-4·25·20) 병합과 오래된 카드 정�
 status: To Do
 assignee: []
 created_date: '2026-11-22T11:28:00Z'
-updated_date: '2026-11-22T11:29:00Z'
+updated_date: '2026-11-22T11:31:00Z'
 labels:
   - cleanup
   - backlog
 dependencies: []
+documentation:
+  - /Users/flynn_macpro/.claude/plans/cleanup-unmerged-branches-cards.md
 ---
 
 ## Description
