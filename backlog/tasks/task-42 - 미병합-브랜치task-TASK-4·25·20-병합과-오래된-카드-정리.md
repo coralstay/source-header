@@ -1,7 +1,7 @@
 ---
-id: DRAFT-15
+id: TASK-42
 title: 미병합 브랜치(task/TASK-4·25·20) 병합과 오래된 카드 정리
-status: Draft
+status: To Do
 assignee: []
 created_date: '2026-11-22T11:28:00Z'
 updated_date: '2026-11-22T11:29:00Z'
