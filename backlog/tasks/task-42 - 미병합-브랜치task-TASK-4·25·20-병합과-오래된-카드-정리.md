@@ -4,7 +4,7 @@ title: 미병합 브랜치(task/TASK-4·25·20) 병합과 오래된 카드 정�
 status: In Progress
 assignee: []
 created_date: '2026-11-22T11:28:00Z'
-updated_date: '2026-11-22T11:32:00Z'
+updated_date: '2026-11-22T12:00:00Z'
 labels:
   - cleanup
   - backlog
@@ -68,3 +68,33 @@ documentation:
 2. 카드별 증거 수집(gh pr list --state merged, git log, lint) → 분류표 → 끝난 카드 Done, 이관 카드 archive, 담당 노트.
 3. pytest·lint·task list 확인 → 기존 브랜치 삭제 → Done → PR.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## 2026-11-22 작업 기록
+### 병합 (AC #1)
+- task/TASK-42 를 task/TASK-4 끝(4f9477b, TASK-42 카드·서명·In Progress 포함)에서 파고 task/TASK-25(f096337, 충돌 없음)·task/TASK-20(2085b8b, work-order.md 충돌 → work-order 재생성) 을 merge 로 합쳤다. origin/main 은 이미 task/TASK-4 의 조상이라 추가 병합 불필요(git diff HEAD...origin/main 비어 있음)
+- task/TASK-20 병합 마무리 커밋은 처음에 backlog_commit_scope 훅이 '상태 전환 + 다른 변경'으로 막았다 → agile-hooks TASK-77(MERGE_HEAD 예외)로 훅을 고치고 설치한 뒤 통과
+- 사람 서명 Plan-Approved(TASK-29~34·37~42) 커밋이 HEAD 이력에 그대로 있다(test_backlog_cleanup)
+
+### 분류표 (AC #2·#3)
+| 카드 | 분류 | 처리 |
+|---|---|---|
+| TASK-3·16 | 실제로 끝남 | task/TASK-20 에 이미 Done(병합으로 들어옴) |
+| TASK-4·5·6·12·13·15·24 | 실제로 끝남 | 병합 PR·PR 범위 코드 무변경·표식 1:1 재계산·origin/main lint 0·테스트로 Done(카드별 노트). 테스트 표식 대신 증거 — 유저 결정 2026-11-22 |
+| TASK-25 | 실제로 끝남 | 브랜치 병합, pytest 84 passed 로 Done |
+| TASK-29~34·37~41 | 이미 Done | task/TASK-4 로 들어옴 |
+| TASK-17~22 | upkeep 으로 이관 | task/TASK-20 에 이미 archive(upkeep TASK-1~6) |
+| TASK-35 | 다른 담당 | Antigravity(handcrafted-python) 노트, To Do 유지 |
+| TASK-14·36 | 다른 담당 | 다른 Claude 세션(ebpf) 노트, To Do 유지 |
+| TASK-26·27 | 남은 일 | 노트, In Progress 유지 |
+| TASK-28·DRAFT-14 | 접은 일 | 손대지 않음(바이트 동일, 테스트) |
+| DRAFT-13 | 대체됨 | 이 카드가 적용 카드 6장을 증거로 닫아 archive |
+| DRAFT-1·3·9·11 | 후속 초안 | 그대로 |
+
+### 검증 (AC #4, DoD #2)
+- pytest(작업 트리): 93 passed + 이 노트 검사 1개(이 노트를 쓴 뒤 통과), ruff All checks passed, source-header lint --strict rc=0
+- 기존 브랜치 정리는 아래 커밋 뒤 로컬 task/TASK-4·25·20 삭제, 원격 task/TASK-4 는 PR 병합 뒤 삭제
+- PR: 소스 브랜치 task/TASK-42(번호는 생성 뒤 추가)
+<!-- SECTION:NOTES:END -->
