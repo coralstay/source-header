@@ -4,7 +4,7 @@ title: 'agile-hooks 잔여 표식: 소스 3개와 테스트 파일 정책'
 status: In Progress
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-11T16:20:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - followup
@@ -56,3 +56,9 @@ agile-hooks PR #3 이후 남은 것.
 2. py 2개 ast 동일, install.sh bash -n, 마커 번호 연속·1:1을 확인한다.
 3. 전체 테스트·커버리지와 lint --strict를 돌려 증거를 남기고 커밋한다.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+- 2026-11-22 TASK-42 분류: 아직 남은 일(AC 0/2). agile-hooks 는 Claude 담당 — 계속 진행 대상
+<!-- SECTION:NOTES:END -->

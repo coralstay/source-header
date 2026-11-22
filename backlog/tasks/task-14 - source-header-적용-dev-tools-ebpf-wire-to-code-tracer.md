@@ -4,7 +4,7 @@ title: 'source-header 적용: dev-tools/ebpf-wire-to-code-tracer'
 status: To Do
 assignee: []
 created_date: '2026-10-31T11:08:00Z'
-updated_date: '2026-10-31T11:45:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - rollout
@@ -71,3 +71,9 @@ TASK-3 조사 결과는 Description 참고. source-header(init/lint/fix/hook)와
 4. (해당 시) 생성기 수정
 5. .githooks 설치(--plugins source-header) → 실측
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+- 2026-11-22 담당: ebpf-wire-to-code-tracer 는 다른 Claude 세션이 작업 중(에이전트 분담, dev-toolchain TASK-179 로 기록 예정). 이 세션은 손대지 않는다
+<!-- SECTION:NOTES:END -->

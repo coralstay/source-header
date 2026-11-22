@@ -4,7 +4,7 @@ title: 'source-header 적용 2차: handcrafted-python'
 status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T07:34:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - rollout
@@ -68,3 +68,9 @@ dependencies: []
 4. scripts/: init + 정해진/서브에이전트 description, 공용 도구 scripts/handcrafted/에만 표식 (AC #3 #5).
 5. 검증, 푸시·PR. 병합은 유저.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+- 2026-11-22 담당: handcrafted-python 은 Antigravity 담당(에이전트 분담). 헤더 작업은 Antigravity 가 자기 방식으로 하거나, 끝난 뒤 이 카드로 정리한다
+<!-- SECTION:NOTES:END -->

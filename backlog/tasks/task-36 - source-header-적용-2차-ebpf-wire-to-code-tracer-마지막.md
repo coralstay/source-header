@@ -4,7 +4,7 @@ title: 'source-header 적용 2차: ebpf-wire-to-code-tracer (마지막)'
 status: To Do
 assignee: []
 created_date: '2026-11-12T07:33:00Z'
-updated_date: '2026-11-12T07:34:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - rollout
@@ -68,3 +68,9 @@ origin은 coralstay/ebpf-wire-to-code-tracer인데 GitHub에서는 coralstay-arc
 4. 핵심 소스에 표식, 코드 무변경 증명(py ast, c·cpp 오브젝트), 기존 테스트 (AC #4 #5).
 5. 푸시는 새 원격 결정 후(이 카드 범위 밖).
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+- 2026-11-22 담당: ebpf-wire-to-code-tracer 는 다른 Claude 세션이 작업 중(에이전트 분담, dev-toolchain TASK-179 로 기록 예정). 이 세션은 손대지 않는다
+<!-- SECTION:NOTES:END -->
