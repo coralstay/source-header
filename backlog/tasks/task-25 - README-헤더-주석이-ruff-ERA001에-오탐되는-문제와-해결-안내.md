@@ -1,10 +1,10 @@
 ---
 id: TASK-25
 title: 'README: 헤더 주석이 ruff ERA001에 오탐되는 문제와 해결 안내'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-11-11T11:29:00Z'
-updated_date: '2026-11-12T01:41:00Z'
+updated_date: '2026-11-22T11:57:00Z'
 labels:
   - source-header
   - followup
@@ -70,4 +70,14 @@ source-header README에 '린터와의 충돌' 절을 추가한다: ERA001 오탐
 - DoD #1(직접 실행): uvx pytest 84 passed·91 subtests passed, ruff All checks passed, source-header lint --strict . exit 0.
 - DoD #2(직접 실행, doctree task/TASK-15 커밋 3304c28): .venv/bin/ruff check src tests → All checks passed!, pytest 282 passed.
 - Done 이동은 하지 않았다: source-header의 testFirst 게이트가 DoD 항목에도 TASK-25#D1·#D2 테스트 표식을 요구하고, DoD #2는 다른 저장소(doctree)의 상태라 이 저장소 테스트로 검증할 수 없다(DRAFT-13의 같은 문제).
+
+## 2026-11-22 TASK-42 에서 마감
+- 브랜치 task/TASK-25(25커밋, 원격에 없었음)를 정리 브랜치 task/TASK-42 에 merge 로 합침(f096337, 충돌 없음)
+- 작업 트리(task/TASK-42)에서 pytest 84 passed, 91 subtests passed(2026-11-22). AC·DoD 는 2026-11-12 에 이미 증거와 함께 체크됨
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+README 에 ruff ERA001 이 source-header 헤더·하단 노트를 주석 처리된 코드로 오탐하는 원인과 per-file-ignores 해결 예(TOML 파싱 검증)를 추가하고, 표식은 소스에만·테스트는 헤더만 둔다는 방침을 적었다. 2026-11-12 에 끝났지만 브랜치가 병합되지 않아 2026-11-22 TASK-42 정리 브랜치로 들였다.
+<!-- SECTION:FINAL_SUMMARY:END -->
