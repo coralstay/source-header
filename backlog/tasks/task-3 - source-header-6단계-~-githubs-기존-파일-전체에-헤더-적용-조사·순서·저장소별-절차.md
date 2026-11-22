@@ -1,10 +1,10 @@
 ---
 id: TASK-3
 title: 'source-header 6단계: ~/githubs 기존 파일 전체에 헤더 적용 (조사·순서·저장소별 절차)'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-30T19:31:00Z'
-updated_date: '2026-11-02T02:25:00Z'
+updated_date: '2026-11-05T18:42:00Z'
 labels:
   - rollout
 dependencies: []

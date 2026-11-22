@@ -1,10 +1,10 @@
 ---
 id: TASK-16
 title: '공개 전환 전 라이선스·저작권 정리: 이력 재생성 5곳 + LICENSE 보강'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-31T11:41:00Z'
-updated_date: '2026-11-02T02:25:00Z'
+updated_date: '2026-11-05T18:42:00Z'
 labels:
   - license
   - public

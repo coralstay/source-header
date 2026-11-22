@@ -4,7 +4,7 @@ title: '보안 기준선 점검으로 확장: 비밀값 스캔·push 보호·Dep
 status: To Do
 assignee: []
 created_date: '2026-11-01T12:50:00Z'
-updated_date: '2026-11-01T13:11:00Z'
+updated_date: '2026-11-05T20:05:00Z'
 labels:
   - security
   - governance
@@ -56,3 +56,9 @@ TASK-17의 조정 루프에 기준선 항목을 플러그인처럼 더한다. �
 3. GF 쪽 .githooks gitleaks 플러그인(별도 카드 연계)
 4. dry-run → 실제 실행
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+이관(2026-11-06): upkeep 저장소(coralstay/upkeep, Private) TASK- 옮겼다. 이후 진행·증거·Done은 그쪽에서 한다.
+<!-- SECTION:NOTES:END -->

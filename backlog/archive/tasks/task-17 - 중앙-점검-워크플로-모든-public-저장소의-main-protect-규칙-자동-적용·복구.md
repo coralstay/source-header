@@ -4,7 +4,7 @@ title: '중앙 점검 워크플로: 모든 public 저장소의 main-protect 규�
 status: To Do
 assignee: []
 created_date: '2026-11-01T12:28:00Z'
-updated_date: '2026-11-01T12:35:00Z'
+updated_date: '2026-11-05T20:05:00Z'
 labels:
   - governance
   - github
@@ -76,3 +76,9 @@ GitHub Actions의 schedule + workflow_dispatch로 조정(reconcile) 루프를 �
 3. README 절(동작, PAT 만드는 법, 수동 실행)
 4. PR로 coralstay/coralstay에 반영 → 유저가 GOVERNANCE_TOKEN 등록 → dry_run 수동 실행 → 실제 실행 실측
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+이관(2026-11-06): upkeep 저장소(coralstay/upkeep, Private) TASK- 옮겼다. 이후 진행·증거·Done은 그쪽에서 한다.
+<!-- SECTION:NOTES:END -->
